@@ -8,6 +8,7 @@ public class test {
 		i+=4;
 		System.out.println(i);
 		i=0;
+		System.out.println(i);
 
 	}
 
