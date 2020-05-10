@@ -112,16 +112,22 @@ public class Principal {
 		//Un print para comprobar si estaba bien
 		System.out.println(acceso);
 
-		System.out.println("Prueba de datos");
+		System.out.println("\nPrueba de datos");
 		Hospital hospital = new Hospital ("pacientes.csv");
 
 		hospital.mostrar_pac();
 
+		//Exportar doc de 'P' (Pacientes) (Cada uno con su respectivo archivo de citas)
 		//hospital.exportar_csv("pacientes2.csv", 'P');
 		System.out.println();
+		
 		hospital.mostrar_doc();
+		
+		//Exportar doc de 'D' (Doctores) (Cada uno con su respectivo archivo de pacientes)
+		/*Ahora esta comentado lo que hace que cree los .csv de pacientes si no lo encuentra
+		porque si no se hacen muchos .csv, al final se activa*/
 		//hospital.exportar_csv("docs.csv", 'D');
-		//exportar_contrasenas(hospital.getDoctores());
+		exportar_contrasenas(hospital.getDoctores());
 
 	}
 
