@@ -1,5 +1,9 @@
 package proyectoIngenieria;
 
+
+import java.io.FileWriter;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Scanner;
 
 public class Principal {
@@ -50,19 +54,75 @@ public class Principal {
 		}
 		
 	}
+	 
+	 /*Para exportar un archivo de usuarios y contrasenas (tener uno para users y
+	 * otro para powerusers) al finalizar el programa (y solo por el, el poweruser no debe poder)*/
+	public static void exportar_contrasenas(ArrayList usuarios) {
+		FileWriter fichero = null;
+
+		try {
+			// Escribimos linea a linea en el fichero
+			// Para exportar un archivo de doctores
+			if (usuarios.get(0) instanceof Doctores) {
+				fichero = new FileWriter("login_usuarios.csv");
+				ArrayList<Doctores> exp_docs= (ArrayList<Doctores>) usuarios;
+				Iterator<Doctores> itr = exp_docs.iterator();
+				fichero.write("Apellido;Nombre;fecha de nacimiento ;Area;DNI;telefono;email;direccion;archivo de pacientes;contraseñas;\n");
+				while (itr.hasNext()) {
+					Doctores actual = itr.next();
+					fichero.write(actual.getApellido()+ ";" + actual.getNombre()+ ";" + actual.getFecha_nacimiento_str()
+					+ ";" +actual.getArea()+ ";" +actual.getDni()+ ";" +actual.getTelefono()+ ";" +actual.getEmail()
+					+ ";" +actual.getDireccion()+ ";" +"pac_" +actual.getDni() +".csv"+";" + actual.getContrasena());
+					fichero.write("\n");
+				}
+			}
+			// Para exportar un archivo de powerusers
+			else if (usuarios.get(0) instanceof PowerUser) {
+				fichero = new FileWriter("login_powerusers.csv");
+				ArrayList<PowerUser> exp_pu = (ArrayList<PowerUser>) usuarios;
+				Iterator<PowerUser> itr = exp_pu.iterator();
+				fichero.write("Apellido;Nombre;fecha de nacimiento;DNI;telefono;email;direccion;contrasenia;\n");
+				while (itr.hasNext()) {
+					PowerUser actual = itr.next();
+					fichero.write(actual.getApellido()+";"+actual.getNombre()+";"+actual.getFecha_nacimiento_str()+";"+
+							actual.getDni()+";"+actual.getTelefono()+";"+actual.getEmail()+";"+actual.getDireccion()+";"
+							+actual.getContrasenia());
+					fichero.write("\n");
+				}
+			}
+
+			fichero.close();
+
+			System.out.println("Los datos se han guardado en el fichero de login" );
+
+		} catch (Exception ex) {
+			System.out.println("Mensaje de la excepción: " + ex.getMessage());
+		}
+	}
 	
+
 	public static void main(String[] args) {
 		System.out.println("Prueba de acceso");
 		String user="user";
 		String password="clave";
 		int N=2;
-		
+
 		boolean acceso=validar_usuario(user, password, N);
-		
+
 		//Un print para comprobar si estaba bien
 		System.out.println(acceso);
-		
-		
+
+		System.out.println("Prueba de datos");
+		Hospital hospital = new Hospital ("pacientes.csv");
+
+		hospital.mostrar_pac();
+
+		//hospital.exportar_csv("pacientes2.csv", 'P');
+		System.out.println();
+		hospital.mostrar_doc();
+		//hospital.exportar_csv("docs.csv", 'D');
+		//exportar_contrasenas(hospital.getDoctores());
+
 	}
 
 }
