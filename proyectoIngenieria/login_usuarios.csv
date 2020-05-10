@@ -1,0 +1,6 @@
+Apellido;Nombre;fecha de nacimiento ;Area;DNI;telefono;email;direccion;archivo de pacientes;contraseñas;
+Perez Vela;Aitor;12/03/95;ONCOLOGIA;WER123456;6017460;doctor@hotmail.com;la esquina a la derecha del arbol;pac_WER123456.csv;aitrop40
+Poza Cruza;Pablo;16/05/45;OFTALMOLOGIA;TYU789012;6017460;doctor@hotmail.com;la casa detrás de la avanida principal;pac_TYU789012.csv;poza56
+Ruiz Ruiz;Marcos;21/01/95;TRAUMATOLOGIA;DFG567889;6017460;doctor@hotmail.com;la esquina a la izquierda del arbol;pac_DFG567889.csv;clave123
+Sastre Jimenez;Claudia;30/01/01;GINECOLOGIA;VBN345890;6017460;doctor@hotmail.com;la esquina frente del arbol grande;pac_VBN345890.csv;sastre1
+Scrobota;Radu I.;23/11/01;PEDIATRIA;HJK765412;6017460;doctor@hotmail.com;la esquina del supermercado arriba;pac_HJK765412.csv;rudu222
