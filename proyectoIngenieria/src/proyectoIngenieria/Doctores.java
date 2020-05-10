@@ -1,11 +1,13 @@
 package proyectoIngenieria;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.Vector;
 
 public class Doctores {
 
 	//Atributos 
+	public enum Area {ONCOLOGIA, OFTALMOLOGIA, TRAUMATOLOGIA, GINECOLOGIA, PEDIATRIA, CARDIOLOGIA, DERMATOLOGIA, GERIATRIA}
 	private String nombre ;
 	private String apellido ;
 	private Date fecha_nacimiento ;
@@ -15,7 +17,39 @@ public class Doctores {
 	private String email ;
 	private String direccion ;
 	private String contrasenia ;
-	private Vector<Pacientes> pacientes ;
+	private ArrayList<Pacientes> pacientes;
+	
+	//Constructor1
+	public Doctores(String apellido,String nombre, Date fecha_nacimiento, Area area, String dni, int telefono,
+			String email, String direccion, ArrayList<Pacientes> pacientes, String contrasenia) {
+		super();
+		this.nombre = nombre;
+		this.apellido = apellido;
+		this.fecha_nacimiento = fecha_nacimiento;
+		this.area = area;
+		this.dni = dni;
+		this.telefono = telefono;
+		this.email = email;
+		this.direccion = direccion;
+		this.contrasenia = contrasenia;
+		this.pacientes = pacientes;
+	}
+	
+	//Constructor2
+	public Doctores(String nombre, String apellido, Date fecha_nacimiento, Area area, String dni, int telefono,
+			String email, String direccion, String contrasenia) {
+		super();
+		this.nombre = nombre;
+		this.apellido = apellido;
+		this.fecha_nacimiento = fecha_nacimiento;
+		this.area = area;
+		this.dni = dni;
+		this.telefono = telefono;
+		this.email = email;
+		this.direccion = direccion;
+		this.contrasenia = contrasenia;
+		this.pacientes = new ArrayList<Pacientes>();
+	}
 	
 	//Getters y Setters 
 	public String getNombre() {
@@ -32,6 +66,10 @@ public class Doctores {
 	}
 	public Date getFecha_nacimiento() {
 		return fecha_nacimiento;
+	}
+	public String getFecha_nacimiento_str() {
+		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yy");
+		return format.format(fecha_nacimiento);
 	}
 	public void setFecha_nacimiento(Date fecha_nacimiento) {
 		this.fecha_nacimiento = fecha_nacimiento;
@@ -72,10 +110,10 @@ public class Doctores {
 	public void setContrasena(String contrasena) {
 		this.contrasenia = contrasena;
 	}
-	public Vector<Pacientes> getPacientes() {
+	public ArrayList<Pacientes> getPacientes() {
 		return pacientes;
 	}
-	public void setPacientes(Vector<Pacientes> pacientes) {
+	public void setPacientes(ArrayList<Pacientes> pacientes) {
 		this.pacientes = pacientes;
 	}
 	
@@ -112,6 +150,15 @@ public class Doctores {
 	}
 	public void PacxArea(int numeroA) {
 		
+	}
+	
+	//Metodos aux
+	@Override
+	public String toString() {
+
+		return apellido + "\t\t" + nombre + "\t\t" + getFecha_nacimiento_str() + "\t\t" + area + "\t" + dni + "\t" + telefono + "\t\t"
+				+ email + "\t" + direccion + "\t\t" + "pac_" + dni + ".csv" + "\t";
+
 	}
 	
 }
