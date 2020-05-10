@@ -11,6 +11,15 @@ public class Citas {
 	private String cantidad ; 
 	private String frecuencia ;
 	
+	//Constructor
+	public Citas(Date fecha, String diagnostico, String medicamientos, String cantidad, String frecuencia) {
+		this.fecha = fecha;
+		this.diagnostico = diagnostico;
+		this.medicamientos = medicamientos;
+		this.cantidad = cantidad;
+		this.frecuencia = frecuencia;
+	}
+	
 	//Getters y Setters
 	public Date getFecha() {
 		return fecha;
