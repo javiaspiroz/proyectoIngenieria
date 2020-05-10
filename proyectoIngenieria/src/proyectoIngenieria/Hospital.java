@@ -29,7 +29,8 @@ public class Hospital {
 	public Hospital(String ruta_pacientes) {
 		this.pacientes = importar_csv_pacientes(ruta_pacientes);
 		this.doctores = importar_csv_doctores();
-		this.powerUser = new ArrayList<PowerUser>();
+		this.powerUser = new ArrayList<PowerUser>(); 
+		//cambiar por importar_csv_poweruser() cuando este el doc
 	}
 
 	// Getters y setters
@@ -69,6 +70,12 @@ public class Hospital {
 		DateFormat sourceFormat1 = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
 		try {
+			//Para que cuando se importe los .csv de pacientes de doctores, se cree si no existe
+			/*
+			if (!fichero.exists()) {
+				// fichero.getParentFile().mkdirs();
+				fichero.createNewFile();
+			}*/
 			Scanner leer = new Scanner(fichero);
 
 			int i = 0;
@@ -89,6 +96,8 @@ public class Hospital {
 			System.out.println("Mal formato de numero");
 			e.printStackTrace();
 		} catch (ParseException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
@@ -202,6 +211,7 @@ public class Hospital {
 							+ actual.getTelefono() + ";" + actual.getEmail() + ";" + actual.getDireccion() + ";"
 							+ "pac_" + actual.getDni() + ".csv");
 					fichero.write("\n");
+					//exportar_csv("pac_" + actual.getDni() + ".csv", 'P');
 				}
 			}
 			// Para exportar un archivo de powerusers
