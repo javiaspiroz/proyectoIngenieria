@@ -15,7 +15,8 @@ public class Principal {
 		
 		int i=0;
 			//While para que se repita mientras alguno est√© mal
-			while ((!usuario.contentEquals(user) || !contrasena.contentEquals(password)) && i<N) { //Si cualquiera de los es falso, entra porque uno esta mal y los dos deben estar bien.
+			while ((!usuario.contentEquals(user) || !contrasena.contentEquals(password)) && i<N) { 
+				//Si cualquiera de los es falso, entra porque uno esta mal y los dos deben estar bien.
 				
 				i++;
 				System.out.println("Introduzca su usuario por favor");
@@ -31,8 +32,8 @@ public class Principal {
 					
 				}
 				else {
-					System.out.println("El usuario introducido es inv√°lido"); /*Solo le avisa con el usuario que est√° mal porque con las contrase√±as no
-																			se suele decir nada.*/
+					System.out.println("El usuario introducido es inv√°lido"); 
+					//Solo le avisa con el usuario que est√° mal porque con las contrase√±as no se suele decir nada
 				}
 				
 				
@@ -102,6 +103,8 @@ public class Principal {
 	
 
 	public static void main(String[] args) {
+		//declaramos la entrada de teclado
+		Scanner sc= new Scanner (System.in);
 		System.out.println("Prueba de acceso");
 		String user="user";
 		String password="clave";
@@ -128,7 +131,162 @@ public class Principal {
 		porque si no se hacen muchos .csv, al final se activa*/
 		//hospital.exportar_csv("docs.csv", 'D');
 		exportar_contrasenas(hospital.getDoctores());
-
+		
+		
+		
+		
+		//Empezamos a desarrollar el menu
+		int decision=0;
+		do{
+			System.out.println("øQuÈ tipo de usuario es?\n 1. Administrador\n 2. Doctor\n 3. Salir del programa");
+			
+			//peta si no meto un numero en la opcion, no me acaba de salir la solucion (en el de analisis estaba bien)
+			if(sc.hasNextInt())
+				decision=sc.nextInt();
+			
+			
+			
+			switch(decision){
+				case 1:
+					//admin
+					System.out.println("admin");
+					//hacer login antes
+					do{
+						System.out.println("øQuÈ desea hacer?\n 1. Buscar pacientes\n 2. Buscar doctores\n 3. Importar CSV\n "
+								+ "4. Exportar CSV\n 5. Mostrar doctores\n 6. Mostrar pacientes\n 7. Dar de alta a un doctor\n "
+								+ "8. Dar de alta a un paciente\n 9. Dar de baja a un doctor\n 10. Dar de baja a un paciente\n "
+								+ "11. Asignar paciente a un doctor\n 12. Eliminar un paciente de un doctor\n 12. Cambiar "
+								+ "contraseÒa\n 13. Cambiar contraseÒa a un doctor\n 14. Total de pacientes\n 15. Pacientes por ·rea\n"
+								+ " 16. Pacientes por doctor\n 17. AÒadir cita\n 18. Editar cita\n 19. Volver\n");
+						switch(decision){
+						case 1:
+							
+							break;
+						case 2:
+							
+							break;
+						case 3:
+								
+								break;
+						case 4:
+							
+							break;
+						case 5:
+	
+							break;
+						case 6:
+							
+							break;
+						case 7:
+							
+							break;	
+						case 8:
+							
+							break;	
+						case 9:
+							
+							break;
+						case 10:
+							
+							break;
+						case 11:
+							
+							break;
+						case 12:
+							
+							break;
+						case 13:
+							
+							break;
+						case 14:
+							
+							break;
+						case 15:
+							
+							break;
+						case 16:
+							
+							break;
+						case 17:
+							
+							break;
+						case 18:
+							
+							break;	
+						case 19:
+							System.out.println("Volver a elegir tipo de usuario");
+							break;	
+						default:
+							System.out.println("Por favor, introduzca un valor v·lido.");
+							break;
+						}
+						if(sc.hasNextInt())
+							decision=sc.nextInt();
+					}
+					while(decision!=19);
+					break;				
+				case 2:
+					//doc
+					System.out.println("doc");
+					do{
+						System.out.println("øQuÈ desea hacer?\n 1. Mostrar pacientes\n 2. Buscar pacientes\n 3. Mostrar citas\n"
+								+ " 4. Eliminar cita\n 5. ⁄ltima modificaciÛn del historial de citas\n 6. Enviar mail\n 7. "
+								+ "Pacientes totales\n 8. Pacientes por Hospital\n 9. Pacientes por ·rea\n 10. Volver\n");
+						
+						switch(decision){
+						case 1:
+							
+							break;
+						case 2:
+							
+							break;
+						case 3:
+								
+								break;
+						case 4:
+							
+							break;
+						case 5:
+	
+							break;
+						case 6:
+							
+							break;
+						case 7:
+							
+							break;	
+						case 8:
+							
+							break;	
+						case 9:
+							
+							break;
+						case 10:
+							System.out.println("Volver a elegir tipo de usuario");
+							break;	
+						default:
+							System.out.println("Por favor, introduzca un valor v·lido.");
+							break;
+						}
+						if(sc.hasNextInt())
+							decision=sc.nextInt();
+					}
+					while(decision!=10);
+					
+					break;
+				case 3:
+					System.out.println("Fin del programa, gracias por confiar en Clinic Admin.");
+					break;
+				default:
+					System.out.println("Por favor, introduzca un valor v·lido.");
+					break;
+			}		
+			System.out.println();
+		}
+		while(decision!=3);
+		
+		
+		sc.close();
 	}
 
 }
