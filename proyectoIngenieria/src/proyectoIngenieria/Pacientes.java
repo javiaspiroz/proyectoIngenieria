@@ -46,7 +46,6 @@ public class Pacientes {
 		this.email = email;
 		this.direccion = direccion;
 		this.seguridad_social = seguridad_social;
-		//this.ruta_citas=ruta;
 		this.registro_citas = new ArrayList<Citas>();
 		this.modificacion_registro = new Date();
 	}
