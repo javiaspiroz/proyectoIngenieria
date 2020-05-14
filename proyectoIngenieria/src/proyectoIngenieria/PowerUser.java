@@ -275,7 +275,7 @@ public class PowerUser {
 		int posicion = -1; // -1 si no encuentro. X si aparece
 		int indice_arraylist = 0; // lo necesitamos para recorrer el array
 
-		if (datos.get(0) instanceof Pacientes) {
+		if (0 < datos.size() && datos.get(0) instanceof Pacientes) {
 			while (posicion == -1 && indice_arraylist < datos.size()) {
 				if (((ArrayList<Pacientes>) datos).get(indice_arraylist).getDni().equals(dni)) {
 					// Lo encontró!
@@ -283,7 +283,7 @@ public class PowerUser {
 				}
 				indice_arraylist++;
 			}
-		} else if (datos.get(0) instanceof Doctores) {
+		} else if (0 < datos.size() && datos.get(0) instanceof Doctores) {
 			while (posicion == -1 && indice_arraylist < datos.size()) {
 				if (((ArrayList<Doctores>) datos).get(indice_arraylist).getDni().equals(dni)) {
 					// Lo encontró!
