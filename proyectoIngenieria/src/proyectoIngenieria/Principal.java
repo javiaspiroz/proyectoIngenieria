@@ -7,53 +7,73 @@ import java.util.Iterator;
 import java.util.Scanner;
 
 public class Principal {
-	//Tenia esta funcion hecha para validar usuario y contraseÃ±a del examen del semestre pasado de programacion
-	public static boolean validar_usuario (String user, String password, int N) {
-		Scanner teclado= new Scanner (System.in);
-		String usuario="";
-		String contrasena="";
+	// Tenia esta funcion hecha para validar usuario y contraseÃ±a del examen del
+	// semestre pasado de programacion
+	public static Object validar_usuario(Hospital hospital, String tipo, int N) {
+		Scanner teclado = new Scanner(System.in);
+		String usuario = "";
+		String contrasena = "";
+		boolean acceso = false;
+		Object actual=null;
 		
-		int i=0;
-			//While para que se repita mientras alguno estÃ© mal
-			while ((!usuario.contentEquals(user) || !contrasena.contentEquals(password)) && i<N) { 
-				//Si cualquiera de los es falso, entra porque uno esta mal y los dos deben estar bien.
-				
-				i++;
-				System.out.println("Introduzca su usuario por favor");
-				
+		System.out.println("LOGIN");
+		// While para que se repita mientras alguno estÃ© mal
+		int i = 0;
+		while (!acceso && i < N) {
+			// Si cualquiera de los dos es falso, entra porque uno esta mal y los dos 
+			// deben estar bien.
+
+			i++;
+			System.out.println("Introduzca su usuario por favor");
+
+			if (teclado.hasNextLine()) {
+				usuario = teclado.nextLine();
+
+				System.out.println("Introduzca su contraseÃ±a por favor");
+
 				if (teclado.hasNextLine()) {
-					usuario=teclado.nextLine();
-				
-					System.out.println("Introduzca su contraseÃ±a por favor");
-					
-					if (teclado.hasNextLine()) {
-						contrasena=teclado.nextLine();
+					contrasena = teclado.nextLine();
+				}
+
+				if (tipo.contentEquals("admin")) {
+					Iterator<PowerUser> itr = hospital.getPowerUser().iterator();
+					while (itr.hasNext() && !acceso) {
+						actual = (PowerUser) actual;
+						actual = itr.next();
+						if (((PowerUser) actual).getDni().equals(usuario) && ((PowerUser) actual).getContrasenia().equals(contrasena)) {
+							acceso = true;
+						}
 					}
-					
+				} else if (tipo.contentEquals("doc")) {
+					Iterator<Doctores> itr = hospital.getDoctores().iterator();
+					while (itr.hasNext() && !acceso) {
+						actual = (Doctores) actual;
+						actual = itr.next();
+						if (((Doctores) actual).getDni().equals(usuario) && ((Doctores) actual).getContrasena().equals(contrasena)) {
+							acceso = true;
+						}
+					}
 				}
-				else {
-					System.out.println("El usuario introducido es invÃ¡lido"); 
-					//Solo le avisa con el usuario que estÃ¡ mal porque con las contraseÃ±as no se suele decir nada
-				}
-				
-				
-				if (!usuario.contentEquals(user) || !contrasena.contentEquals(password)) {
-					System.out.println("La contraseÃ±a o el usuario son incorrectos. \nIntentelo de nuevo");
-				}
-				
-				
-			} //Fin While
-		
-		//Decirle si accediÃ³ o no
-		if (usuario.contentEquals(user) && contrasena.contentEquals(password)) {
+
+			}
+
+			if (!acceso) {
+				System.out.println("La contraseÃ±a o el usuario son incorrectos. \nIntentelo de nuevo"
+						+ "\nIntentos restantes: " + (N - i));
+
+			}
+
+		} // Fin While
+
+		// Decirle si accediÃ³ o no
+		if (acceso) {
 			System.out.println("La contraseÃ±a y el usuario son correctos. \nAcesso concedido");
-			return true;
-		}
-		else {
+		} else {
 			System.out.println("La contraseÃ±a o el usuario son incorrectos. \nAcesso denegado");
-			return false;
 		}
 		
+		return actual;
+
 	}
 	 
 	 /*Para exportar un archivo de usuarios y contrasenas (tener uno para users y
@@ -82,7 +102,7 @@ public class Principal {
 				fichero = new FileWriter("login_powerusers.csv");
 				ArrayList<PowerUser> exp_pu = (ArrayList<PowerUser>) usuarios;
 				Iterator<PowerUser> itr = exp_pu.iterator();
-				fichero.write("Apellido;Nombre;fecha de nacimiento;DNI;telefono;email;direccion;contrasenia;\n");
+				fichero.write("Apellido;Nombre;fecha de nacimiento;DNI;telefono;email;direccion;contraseÃ±as;\n");
 				while (itr.hasNext()) {
 					PowerUser actual = itr.next();
 					fichero.write(actual.getApellido()+";"+actual.getNombre()+";"+actual.getFecha_nacimiento_str()+";"+
@@ -105,32 +125,23 @@ public class Principal {
 	public static void main(String[] args) {
 		//declaramos la entrada de teclado
 		Scanner sc= new Scanner (System.in);
-		System.out.println("Prueba de acceso");
-		String user="user";
-		String password="clave";
-		int N=2;
-
-		boolean acceso=validar_usuario(user, password, N);
-
-		//Un print para comprobar si estaba bien
-		System.out.println(acceso);
-
-		System.out.println("\nPrueba de datos");
+		
+		//System.out.println("\nPrueba de datos");
 		Hospital hospital = new Hospital ("pacientes.csv");
 
-		hospital.mostrar_pac();
+		//hospital.mostrar_pac();
 
 		//Exportar doc de 'P' (Pacientes) (Cada uno con su respectivo archivo de citas)
 		//hospital.exportar_csv("pacientes2.csv", 'P');
 		System.out.println();
 		
-		hospital.mostrar_doc();
+		//hospital.mostrar_doc();
 		
 		//Exportar doc de 'D' (Doctores) (Cada uno con su respectivo archivo de pacientes)
 		/*Ahora esta comentado lo que hace que cree los .csv de pacientes si no lo encuentra
 		porque si no se hacen muchos .csv, al final se activa*/
 		//hospital.exportar_csv("docs.csv", 'D');
-		exportar_contrasenas(hospital.getDoctores());
+		//exportar_contrasenas(hospital.getDoctores());
 		
 		
 		
@@ -138,26 +149,34 @@ public class Principal {
 		//Empezamos a desarrollar el menu
 		int decision=0;
 		do{
-			System.out.println("¿Qué tipo de usuario es?\n 1. Administrador\n 2. Doctor\n 3. Salir del programa");
+			System.out.println("Â¿QuÃ© tipo de usuario es?\n 1. Administrador\n 2. Doctor\n 3. Salir del programa");
 			
-			//peta si no meto un numero en la opcion, no me acaba de salir la solucion (en el de analisis estaba bien)
-			if(sc.hasNextInt())
-				decision=sc.nextInt();
-			
+		//peta si no meto un numero en la opcion, no me acaba de salir la solucion (en el de analisis estaba bien)
+		while (!sc.hasNextInt()) {
+			System.out.print("ERROR. \nIntroduzca un numero (entero) por favor:");
+			sc.next();	
+		}
+		decision=sc.nextInt();
 			
 			
 			switch(decision){
 				case 1:
 					//admin
 					System.out.println("admin");
-					//hacer login antes
-					do{
-						System.out.println("¿Qué desea hacer?\n 1. Buscar pacientes\n 2. Buscar doctores\n 3. Importar CSV\n "
+					//hacer login antes. 3 intentos maximo
+					PowerUser poweruser=(PowerUser)validar_usuario(hospital, "admin", 3);
+					while(decision!=19 && poweruser!=null) {
+						System.out.println("Bienvenido " + poweruser.getNombre() + " " + poweruser.getApellido());
+						System.out.println("ï¿½Quï¿½ desea hacer?\n 1. Buscar pacientes\n 2. Buscar doctores\n 3. Importar CSV\n "
 								+ "4. Exportar CSV\n 5. Mostrar doctores\n 6. Mostrar pacientes\n 7. Dar de alta a un doctor\n "
 								+ "8. Dar de alta a un paciente\n 9. Dar de baja a un doctor\n 10. Dar de baja a un paciente\n "
 								+ "11. Asignar paciente a un doctor\n 12. Eliminar un paciente de un doctor\n 12. Cambiar "
-								+ "contraseña\n 13. Cambiar contraseña a un doctor\n 14. Total de pacientes\n 15. Pacientes por área\n"
-								+ " 16. Pacientes por doctor\n 17. Añadir cita\n 18. Editar cita\n 19. Volver\n");
+								+ "contraseï¿½a\n 13. Cambiar contraseï¿½a a un doctor\n 14. Total de pacientes\n 15. Pacientes por ï¿½rea\n"
+								+ " 16. Pacientes por doctor\n 17. Aï¿½adir cita\n 18. Editar cita\n 19. Volver\n");
+						
+						if(sc.hasNextInt())
+							decision=sc.nextInt();
+						
 						switch(decision){
 						case 1:
 							
@@ -172,7 +191,7 @@ public class Principal {
 							
 							break;
 						case 5:
-	
+							poweruser.mostrar_doc();
 							break;
 						case 6:
 							
@@ -217,21 +236,24 @@ public class Principal {
 							System.out.println("Volver a elegir tipo de usuario");
 							break;	
 						default:
-							System.out.println("Por favor, introduzca un valor válido.");
+							System.out.println("Por favor, introduzca un valor vï¿½lido.");
 							break;
 						}
-						if(sc.hasNextInt())
-							decision=sc.nextInt();
+						
+						
 					}
-					while(decision!=19);
+				
 					break;				
 				case 2:
 					//doc
 					System.out.println("doc");
-					do{
-						System.out.println("¿Qué desea hacer?\n 1. Mostrar pacientes\n 2. Buscar pacientes\n 3. Mostrar citas\n"
-								+ " 4. Eliminar cita\n 5. Última modificación del historial de citas\n 6. Enviar mail\n 7. "
-								+ "Pacientes totales\n 8. Pacientes por Hospital\n 9. Pacientes por área\n 10. Volver\n");
+					//hacer login antes. 3 intentos maximo
+					Doctores user=(Doctores) validar_usuario(hospital, "doc", 3);
+					while(decision!=10 && user!=null) {
+						System.out.println("Bienvenido " + user.getNombre() + " " + user.getApellido());
+						System.out.println("ï¿½Quï¿½ desea hacer?\n 1. Mostrar pacientes\n 2. Buscar pacientes\n 3. Mostrar citas\n"
+								+ " 4. Eliminar cita\n 5. ï¿½ltima modificaciï¿½n del historial de citas\n 6. Enviar mail\n 7. "
+								+ "Pacientes totales\n 8. Pacientes por Hospital\n 9. Pacientes por ï¿½rea\n 10. Volver\n");
 						
 						switch(decision){
 						case 1:
@@ -265,20 +287,21 @@ public class Principal {
 							System.out.println("Volver a elegir tipo de usuario");
 							break;	
 						default:
-							System.out.println("Por favor, introduzca un valor válido.");
+							System.out.println("Por favor, introduzca un valor vï¿½lido.");
 							break;
 						}
 						if(sc.hasNextInt())
 							decision=sc.nextInt();
 					}
-					while(decision!=10);
 					
 					break;
 				case 3:
+					exportar_contrasenas(hospital.getDoctores());
+					exportar_contrasenas(hospital.getPowerUser());
 					System.out.println("Fin del programa, gracias por confiar en Clinic Admin.");
 					break;
 				default:
-					System.out.println("Por favor, introduzca un valor válido.");
+					System.out.println("Por favor, introduzca un valor vï¿½lido.");
 					break;
 			}		
 			System.out.println();
