@@ -70,12 +70,6 @@ public class Hospital {
 		DateFormat sourceFormat1 = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
 		try {
-			//Para que cuando se importe los .csv de pacientes de doctores, se cree si no existe
-			
-			if (!fichero.exists()) {
-				// fichero.getParentFile().mkdirs();
-				fichero.createNewFile();
-			}
 			Scanner leer = new Scanner(fichero);
 
 			int i = 0;
@@ -183,9 +177,10 @@ public class Hospital {
 		try {
 			fichero = new FileWriter(ruta);
 			// Escribimos linea a linea en el fichero
-
+			
 			// Para exportar un archivo de pacientes
 			if (tipo == 'P') {
+				
 				Iterator<Pacientes> itr = pacientes.iterator();
 				fichero.write("Apellido;Nombre;fecha de nacimiento ;DNI;telefono;email;"
 						+ "direccion;N Seguridad social;archivo de citas;Ultima modificacion de citas;\n");
@@ -211,7 +206,8 @@ public class Hospital {
 							+ actual.getTelefono() + ";" + actual.getEmail() + ";" + actual.getDireccion() + ";"
 							+ "pac_" + actual.getDni() + ".csv");
 					fichero.write("\n");
-					//exportar_csv("pac_" + actual.getDni() + ".csv", 'P');
+					exportar_csv("pac_" + actual.getDni() + ".csv", 'P');
+					
 				}
 			}
 			// Para exportar un archivo de powerusers
@@ -393,10 +389,7 @@ public class Hospital {
 		DateFormat sourceFormat = new SimpleDateFormat("dd/MM/yyyy");
 
 		try {
-			if (!fichero.exists()) {
-				// fichero.getParentFile().mkdirs();
-				fichero.createNewFile();
-			}
+			
 
 			Scanner leer = new Scanner(fichero);
 
@@ -413,7 +406,7 @@ public class Hospital {
 			}
 		} catch (FileNotFoundException e) {
 			// e.printStackTrace();
-			System.out.println("Fichero '" + ruta + "' no encontrado!");
+			//System.out.println("Fichero '" + ruta + "' no encontrado!");
 
 		} catch (NumberFormatException e) {
 			System.out.println("Mal formato de numero");
@@ -434,6 +427,11 @@ public class Hospital {
 		DateFormat sourceFormat = new SimpleDateFormat("dd/MM/yyyy");
 		try {
 			fichero = new FileWriter("citas_" + paciente.getDni() + ".csv");
+			if (!new File("citas_" + paciente.getDni() + ".csv").exists()) {
+				// fichero.getParentFile().mkdirs();
+				new File("citas_" + paciente.getDni() + ".csv").createNewFile();
+			}
+			
 			// Escribimos linea a linea en el fichero
 			Iterator<Citas> itr = paciente.getRegistro_citas().iterator();
 			fichero.write("Fecha;Diagnostico;medicamentos;cantidad;frecuencia;\n");
