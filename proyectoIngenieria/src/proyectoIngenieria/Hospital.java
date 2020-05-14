@@ -294,7 +294,7 @@ public class Hospital {
 	public void filtrar_doctores(String filtro, Object busqueda) {
 		filtro = filtro.toLowerCase();
 
-		Iterator itr = pacientes.iterator();
+		Iterator<Pacientes> itr = pacientes.iterator();
 
 		while (itr.hasNext()) {
 			if (busqueda instanceof String) {
@@ -326,7 +326,7 @@ public class Hospital {
 						System.out.println(actual);
 					}
 				} else if (filtro.equals("apellido")) {
-					if ((actual.getNombre()).equals((String) busqueda)) {
+					if ((actual.getApellido()).equals((String) busqueda)) {
 						System.out.println(actual);
 					}
 				}
