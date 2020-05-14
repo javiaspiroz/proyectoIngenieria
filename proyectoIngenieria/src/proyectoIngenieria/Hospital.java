@@ -8,8 +8,11 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.Scanner;
+
+import proyectoIngenieria.Doctores.Area;
 
 public class Hospital {
 
@@ -289,49 +292,184 @@ public class Hospital {
 	// Este es para buscar doctores segun un filtro
 	public void filtrar_doctores(String filtro, Object busqueda) {
 		filtro = filtro.toLowerCase();
+		Doctores actual;
 
-		Iterator<Pacientes> itr = pacientes.iterator();
+		Iterator<Doctores> itr = doctores.iterator();
+		System.out.println("Apellido\t\t" + "Nombre\t\t" + "Fecha de nacimiento\t" + "Area\t\t" + "DNI\t\t"
+				+ "telefono\t" + "email\t\t\t" + "direccion\t\t\t\t\t" + "archivo de pacientes\t");
 
-		while (itr.hasNext()) {
-			if (busqueda instanceof String) {
-
-				if (filtro.equals("nombre")) {
-
+		if (busqueda instanceof String) {
+			String search = (String) busqueda;
+			if (filtro.equals("nombre")) {
+				while (itr.hasNext()) {
+					actual = itr.next();
+					if (actual.getNombre().equals(search)) {
+						System.out.println(actual);
+					}
+				}
+			} else if (filtro.equals("apellido")) {
+				while (itr.hasNext()) {
+					actual = itr.next();
+					if (actual.getApellido().equals(search)) {
+						System.out.println(actual);
+					}
 				}
 
-			} else if (busqueda instanceof Integer) {
+			} else if (filtro.equals("dni")) {
+				while (itr.hasNext()) {
+					actual = itr.next();
+					if (actual.getDni().equals(search)) {
+						System.out.println(actual);
+					}
+				}
 
+			} else if (filtro.equals("email")) {
+				while (itr.hasNext()) {
+					actual = itr.next();
+					if (actual.getEmail().equals(search)) {
+						System.out.println(actual);
+					}
+				}
+
+			} else if (filtro.equals("direccion")) {
+				while (itr.hasNext()) {
+					actual = itr.next();
+					if (actual.getDireccion().contains(search)) {
+						System.out.println(actual);
+					}
+				}
+			} else if (filtro.equals("fecha de nacimiento")) {
+				//Poner la fecha de nacimiento en formato dd/mm/yy
+				while (itr.hasNext()) {
+					actual = itr.next();
+					if (actual.getFecha_nacimiento_str().equals(search)) {
+						System.out.println(actual);
+					}
+				}
+
+			} else {
+				System.out.println("No hubo resultados");
 			}
-		}
 
+		} else if (busqueda instanceof Integer) {
+			int search = (Integer) busqueda;
+			if (filtro.equals("telefono")) {
+				while (itr.hasNext()) {
+					actual = itr.next();
+					if (actual.getTelefono() == search) {
+						System.out.println(actual);
+					}
+				}
+			} else {
+				System.out.println("No hubo resultados");
+			}
+
+		} else if (busqueda instanceof Area) {
+			Area search = (Area) busqueda;
+			if (filtro.equals("area")) {
+
+				while (itr.hasNext()) {
+					actual = itr.next();
+					if (actual.getArea() == search) {
+						System.out.println(actual);
+					}
+				}
+			} else {
+				System.out.println("No hubo resultados");
+			}
+
+		}
 	}
 
 	// Este es para buscar pacientes segun un filtro
 	public void filtrar_pacientes(String filtro, Object busqueda) {
 		filtro = filtro.toLowerCase();
-
+		Pacientes actual;
+		
 		Iterator<Pacientes> itr = pacientes.iterator();
-
+		System.out.println(
+				"Apellido\t\t" + "Nombre\t\t" + "Fecha de nacimiento\t" + "DNI\t\t" + "telefono\t" + "email\t\t\t"
+						+ "direccion\t\t\t\t\t" + "Seguridad social\t" + "archivo de citas\t" + "Ultima modificacion");
 		// if (!itr.hasNext()) throw new NoSuchElementException();
 
 		while (itr.hasNext()) {
 			if (busqueda instanceof String) {
-				Pacientes actual = itr.next();
+				String search = (String) busqueda;
 				if (filtro.equals("nombre")) {
-					if ((actual.getNombre()).equals((String) busqueda)) {
-						System.out.println(actual);
+					while (itr.hasNext()) {
+						actual = itr.next();
+						if (actual.getNombre().equals(search)) {
+							System.out.println(actual);
+						}
 					}
 				} else if (filtro.equals("apellido")) {
-					if ((actual.getApellido()).equals((String) busqueda)) {
-						System.out.println(actual);
+					while (itr.hasNext()) {
+						actual = itr.next();
+						if (actual.getApellido().equals(search)) {
+							System.out.println(actual);
+						}
 					}
+				} else if (filtro.equals("dni")) {
+					while (itr.hasNext()) {
+						actual = itr.next();
+						if (actual.getDni().equals(search)) {
+							System.out.println(actual);
+						}
+					}
+
+				} else if (filtro.equals("email")) {
+					while (itr.hasNext()) {
+						actual = itr.next();
+						if (actual.getEmail().equals(search)) {
+							System.out.println(actual);
+						}
+					}
+
+				} else if (filtro.equals("direccion")) {
+					while (itr.hasNext()) {
+						actual = itr.next();
+						if (actual.getDireccion().contains(search)) {
+							System.out.println(actual);
+						}
+					}
+				} else if (filtro.equals("fecha de nacimiento")) {
+					//Poner la fecha de nacimiento en formato dd/mm/yy
+					while (itr.hasNext()) {
+						actual = itr.next();
+						if (actual.getFecha_nacimiento_str().equals(search)) {
+							System.out.println(actual);
+						}
+					}
+
+				} else {
+					System.out.println("No hubo resultados");
 				}
+
+				
 			} else if (busqueda instanceof Integer) {
-				Pacientes actual = itr.next();
+				int search = (Integer) busqueda;
 				if (filtro.equals("telefono")) {
-					if (actual.getTelefono() == (Integer) busqueda) {
-						System.out.println(actual);
+					while (itr.hasNext()) {
+						actual = itr.next();
+						if (actual.getTelefono() == search) {
+							System.out.println(actual);
+						}
 					}
+				} else {
+					System.out.println("No hubo resultados");
+				}
+
+			} else if (busqueda instanceof Long) {
+				long search = (Long) busqueda;
+				if (filtro.equals("seguridad social")) {
+					while (itr.hasNext()) {
+						actual = itr.next();
+						if (actual.getSeguridad_social() == search) {
+							System.out.println(actual);
+						}
+					}
+				} else {
+					System.out.println("No hubo resultados");
 				}
 			}
 
