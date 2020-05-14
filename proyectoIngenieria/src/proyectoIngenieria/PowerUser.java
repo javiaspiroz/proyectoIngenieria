@@ -247,6 +247,10 @@ public class PowerUser {
 				System.out.println("ERROR AL EDITAR LA CITA.\n El campo " + campo + "no es válido");
 			}
 			
+			if (exito) {
+				pacientes.setModificacion_registro(new Date());
+			}
+			
 		}
 		return exito;
 		
