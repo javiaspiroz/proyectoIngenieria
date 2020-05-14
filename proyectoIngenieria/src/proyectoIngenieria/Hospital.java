@@ -426,20 +426,20 @@ public class Hospital {
 		FileWriter fichero = null;
 		DateFormat sourceFormat = new SimpleDateFormat("dd/MM/yyyy");
 		try {
-			fichero = new FileWriter("citas_" + paciente.getDni() + ".csv");
-			if (!new File("citas_" + paciente.getDni() + ".csv").exists()) {
-				// fichero.getParentFile().mkdirs();
-				new File("citas_" + paciente.getDni() + ".csv").createNewFile();
-			}
+			
 			
 			// Escribimos linea a linea en el fichero
 			Iterator<Citas> itr = paciente.getRegistro_citas().iterator();
-			fichero.write("Fecha;Diagnostico;medicamentos;cantidad;frecuencia;\n");
+			
 			while (itr.hasNext()) {
 				Citas actual = itr.next();
+				if (actual!=null) {
+					fichero = new FileWriter("citas_" + paciente.getDni() + ".csv");
+					fichero.write("Fecha;Diagnostico;medicamentos;cantidad;frecuencia;\n");
 				fichero.write(sourceFormat.format(actual.getFecha()) + ";" + actual.getDiagnostico() + ";"
 						+ actual.getMedicamiento() + ";" + actual.getCantidad() + ";" + actual.getFrecuencia() + ";");
 				fichero.write("\n");
+				}
 
 			}
 			fichero.close();
@@ -447,42 +447,45 @@ public class Hospital {
 			System.out.println("Los datos se han guardado en el fichero citas_" + paciente.getDni() + ".csv");
 
 		} catch (Exception ex) {
-			System.out.println("Mensaje de la excepción: " + ex.getMessage());
+			if (fichero==null) {
+			System.out.println("El paciente " + paciente.getDni() + " no tiene citas");
+			}
 		}
 	}
-	
-	//Para exportar los pacientes de cada doctor individual
-		public void exportar_csv_pac(Doctores doctor) {
-			FileWriter fichero = null;
-			DateFormat sourceFormat = new SimpleDateFormat("dd/MM/yyyy");
-			try {
-				fichero = new FileWriter("pac_" + doctor.getDni() + ".csv");
-				if (!new File("pac_" + doctor.getDni() + ".csv").exists()) {
-					// fichero.getParentFile().mkdirs();
-					new File("pac_" + doctor.getDni() + ".csv").createNewFile();
-				}
-				
-				// Escribimos linea a linea en el fichero
-				Iterator<Pacientes> itr = doctor.getPacientes().iterator();
-				fichero.write("Apellido;Nombre;fecha de nacimiento ;DNI;telefono;email;"
-						+ "direccion;N Seguridad social;archivo de citas;Ultima modificacion de citas;\n");
-				while (itr.hasNext()) {
-					Pacientes actual = itr.next();
+
+	// Para exportar los pacientes de cada doctor individual
+	public void exportar_csv_pac(Doctores doctor) {
+		FileWriter fichero = null;
+		DateFormat sourceFormat = new SimpleDateFormat("dd/MM/yyyy");
+		try {
+
+			// Escribimos linea a linea en el fichero
+			Iterator<Pacientes> itr = doctor.getPacientes().iterator();
+
+			while (itr.hasNext()) {
+				Pacientes actual = itr.next();
+				if (actual != null) {
+					fichero = new FileWriter("pac_" + doctor.getDni() + ".csv");
+					fichero.write("Apellido;Nombre;fecha de nacimiento ;DNI;telefono;email;"
+							+ "direccion;N Seguridad social;archivo de citas;Ultima modificacion de citas;\n");
 					fichero.write(actual.getApellido() + ";" + actual.getNombre() + ";"
 							+ actual.getFecha_nacimiento_str() + ";" + actual.getDni() + ";" + actual.getTelefono()
 							+ ";" + actual.getEmail() + ";" + actual.getDireccion() + ";" + actual.getSeguridad_social()
 							+ ";" + "citas_" + actual.getDni() + ".csv" + ";" + actual.getModificacion_registro_str());
 					fichero.write("\n");
 					exportar_csv_citas(actual);
-
 				}
-				fichero.close();
 
-				System.out.println("Los datos se han guardado en el fichero pac_" + doctor.getDni() + ".csv");
+			}
+			fichero.close();
 
-			} catch (Exception ex) {
-				System.out.println("Mensaje de la excepción: " + ex.getMessage());
+			System.out.println("Los datos se han guardado en el fichero pac_" + doctor.getDni() + ".csv");
+
+		} catch (Exception ex) {
+			if (fichero==null) {
+			System.out.println("El doctor " + doctor.getDni() + " no tiene pacientes asignados");
 			}
 		}
+	}
 
 }
