@@ -29,7 +29,7 @@ public class Hospital {
 	public Hospital(String ruta_pacientes) {
 		this.pacientes = importar_csv_pacientes(ruta_pacientes);
 		this.doctores = importar_csv_doctores();
-		this.powerUser = new ArrayList<PowerUser>(); 
+		this.powerUser = importar_csv_poweruser(); 
 		//cambiar por importar_csv_poweruser() cuando este el doc
 	}
 
@@ -71,11 +71,11 @@ public class Hospital {
 
 		try {
 			//Para que cuando se importe los .csv de pacientes de doctores, se cree si no existe
-			/*
+			
 			if (!fichero.exists()) {
 				// fichero.getParentFile().mkdirs();
 				fichero.createNewFile();
-			}*/
+			}
 			Scanner leer = new Scanner(fichero);
 
 			int i = 0;
@@ -159,7 +159,7 @@ public class Hospital {
 				datos[i] = linea.split(";");
 				if (i > 0) {
 					PowerUser new_doc = new PowerUser(datos[i][0], datos[i][1], sourceFormat.parse(datos[i][2]),
-							datos[i][3], Integer.parseInt(datos[i][4]), datos[i][6], datos[i][7], datos[i][8], this);
+							datos[i][3], Integer.parseInt(datos[i][4]), datos[i][5], datos[i][6], datos[i][7], this);
 					new_docs.add(new_doc);
 				}
 				i++;
