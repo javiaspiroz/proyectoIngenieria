@@ -85,7 +85,7 @@ public class Hospital {
 				i++;
 			}
 		} catch (FileNotFoundException e) {
-			System.out.println("Fichero '" + ruta + "' no encontrado!");
+			//System.out.println("Fichero 'dg" + ruta + "' no encontrado!");
 		} catch (NumberFormatException e) {
 			System.out.println("Mal formato de numero");
 			e.printStackTrace();
@@ -206,7 +206,7 @@ public class Hospital {
 							+ actual.getTelefono() + ";" + actual.getEmail() + ";" + actual.getDireccion() + ";"
 							+ "pac_" + actual.getDni() + ".csv");
 					fichero.write("\n");
-					exportar_csv("pac_" + actual.getDni() + ".csv", 'P');
+					exportar_csv_pac(actual);
 					
 				}
 			}
@@ -450,5 +450,39 @@ public class Hospital {
 			System.out.println("Mensaje de la excepción: " + ex.getMessage());
 		}
 	}
+	
+	//Para exportar los pacientes de cada doctor individual
+		public void exportar_csv_pac(Doctores doctor) {
+			FileWriter fichero = null;
+			DateFormat sourceFormat = new SimpleDateFormat("dd/MM/yyyy");
+			try {
+				fichero = new FileWriter("pac_" + doctor.getDni() + ".csv");
+				if (!new File("pac_" + doctor.getDni() + ".csv").exists()) {
+					// fichero.getParentFile().mkdirs();
+					new File("pac_" + doctor.getDni() + ".csv").createNewFile();
+				}
+				
+				// Escribimos linea a linea en el fichero
+				Iterator<Pacientes> itr = doctor.getPacientes().iterator();
+				fichero.write("Apellido;Nombre;fecha de nacimiento ;DNI;telefono;email;"
+						+ "direccion;N Seguridad social;archivo de citas;Ultima modificacion de citas;\n");
+				while (itr.hasNext()) {
+					Pacientes actual = itr.next();
+					fichero.write(actual.getApellido() + ";" + actual.getNombre() + ";"
+							+ actual.getFecha_nacimiento_str() + ";" + actual.getDni() + ";" + actual.getTelefono()
+							+ ";" + actual.getEmail() + ";" + actual.getDireccion() + ";" + actual.getSeguridad_social()
+							+ ";" + "citas_" + actual.getDni() + ".csv" + ";" + actual.getModificacion_registro_str());
+					fichero.write("\n");
+					exportar_csv_citas(actual);
+
+				}
+				fichero.close();
+
+				System.out.println("Los datos se han guardado en el fichero pac_" + doctor.getDni() + ".csv");
+
+			} catch (Exception ex) {
+				System.out.println("Mensaje de la excepción: " + ex.getMessage());
+			}
+		}
 
 }
