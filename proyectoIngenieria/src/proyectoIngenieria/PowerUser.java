@@ -263,6 +263,7 @@ public class PowerUser {
 
 		if (posicion == -1) {
 			pacientes.getRegistro_citas().add(citas);
+			pacientes.setModificacion_registro(new Date());
 			exito=true;
 		} else {
 			System.out.println("NO SE HA PODIDO AGREGAR CITA.\n La cita del paciente " + pacientes.getApellido() + " "
