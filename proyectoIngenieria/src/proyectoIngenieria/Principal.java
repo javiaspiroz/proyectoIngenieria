@@ -3,8 +3,11 @@ package proyectoIngenieria;
 
 import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.Scanner;
+
+import proyectoIngenieria.Doctores.Area;
 
 public class Principal {
 	// Tenia esta funcion hecha para validar usuario y contraseña del examen del
@@ -129,21 +132,32 @@ public class Principal {
 		//System.out.println("\nPrueba de datos");
 		Hospital hospital = new Hospital ("pacientes.csv");
 
+		//Prueba de metodos que impresion de info
 		//hospital.mostrar_pac();
-
-		//Exportar doc de 'P' (Pacientes) (Cada uno con su respectivo archivo de citas)
-		//hospital.exportar_csv("pacientes2.csv", 'P');
-		System.out.println();
-		
 		//hospital.mostrar_doc();
+
+		//Prueba de exportacion de archivos luego de modificarlos
+		//Creo una cita
+		/*Citas citas = new Citas (new Date(), "Corona", "medicina", "mucha", "todos los dias");
+		//Agrego cita a un paciente
+		hospital.getPowerUser().get(0).add_cita(citas, hospital.getPacientes().get(4));
+		//Agrego el paciente a un doctor
+		hospital.getPowerUser().get(0).add_pac(hospital.getPacientes().get(2), hospital.getDoctores().get(3));
+		//Exporto el .csv de todos los doctores, que a su vez exporta el .csv de sus pacientes y de sus citas
+		hospital.exportar_csv("docs.csv", 'D');
+		//Exportar el .csv de todos los pacientes
+		hospital.exportar_csv("pc.csv", 'P');
+		System.out.println();*/
 		
-		//Exportar doc de 'D' (Doctores) (Cada uno con su respectivo archivo de pacientes)
-		/*Ahora esta comentado lo que hace que cree los .csv de pacientes si no lo encuentra
-		porque si no se hacen muchos .csv, al final se activa*/
+		//Prueba Exportar doc de 'D' (Doctores) (Cada uno con su respectivo archivo de pacientes
 		//hospital.exportar_csv("docs.csv", 'D');
+		
+		//Prueba Exportar el archivo login de doctores (usuarios)
 		//exportar_contrasenas(hospital.getDoctores());
 		
-		
+		//Prueba de la busqueda filtrada
+		//hospital.filtrar_doctores("area", Area.PEDIATRIA);
+		//hospital.filtrar_pacientes("fecha de nacimiento", "07/02/97");
 		
 		
 		//Empezamos a desarrollar el menu
