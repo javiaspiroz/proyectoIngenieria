@@ -478,7 +478,7 @@ public class Hospital {
 
 	// Metodos auxiliares
 	// Funcion AUX: para contar columnas del csv para luego usar al crear la matriz
-	public static int contar_columnas(String ruta) {
+	protected static int contar_columnas(String ruta) {
 		File fichero = new File(ruta);
 		int columnas = 0;
 		String linea = "";
@@ -499,7 +499,7 @@ public class Hospital {
 	}
 
 	// Funcion AUX: para contar filas del csv para luego usar al crear la matriz
-	public static int contar_filas(String ruta) {
+	protected static int contar_filas(String ruta) {
 		File fichero = new File(ruta);
 		int filas = 0;
 
@@ -536,8 +536,7 @@ public class Hospital {
 				linea = leer.nextLine();
 				datos[i] = linea.split(";");
 				if (i > 0) {
-					Citas new_cita = new Citas(sourceFormat.parse(datos[i][0]), datos[i][1], datos[i][2], datos[i][3],
-							datos[i][4]);
+					Citas new_cita = new Citas(sourceFormat.parse(datos[i][0]), datos[i][1], datos[i][2]);
 					new_citas.add(new_cita);
 				}
 				i++;
@@ -573,9 +572,9 @@ public class Hospital {
 				Citas actual = itr.next();
 				if (actual!=null) {
 					fichero = new FileWriter("citas_" + paciente.getDni() + ".csv");
-					fichero.write("Fecha;Diagnostico;medicamentos;cantidad;frecuencia;\n");
+					fichero.write("Fecha;Diagnostico;medicamentos;\n");
 				fichero.write(sourceFormat.format(actual.getFecha()) + ";" + actual.getDiagnostico() + ";"
-						+ actual.getMedicamiento() + ";" + actual.getCantidad() + ";" + actual.getFrecuencia() + ";");
+						+ actual.getMedicamiento() + ";");
 				fichero.write("\n");
 				}
 

@@ -235,14 +235,14 @@ public class PowerUser {
 				pacientes.getRegistro_citas().get(posicion).setMedicamiento(new_dato);
 				exito = true;
 			}
-			else if (campo_lc.equals("cantidad")) {
+			/*else if (campo_lc.equals("cantidad")) {
 				pacientes.getRegistro_citas().get(posicion).setCantidad(new_dato);
 				exito = true;
 			}
 			else if (campo_lc.equals("frecuencia")) {
 				pacientes.getRegistro_citas().get(posicion).setFrecuencia(new_dato);
 				exito = true;
-			}
+			}*/
 			else {
 				System.out.println("ERROR AL EDITAR LA CITA.\n El campo " + campo + "no es válido");
 			}
@@ -263,6 +263,7 @@ public class PowerUser {
 
 		if (posicion == -1) {
 			pacientes.getRegistro_citas().add(citas);
+			//Esto actualiza la ultima modificación a la fevha actual
 			pacientes.setModificacion_registro(new Date());
 			exito=true;
 		} else {
