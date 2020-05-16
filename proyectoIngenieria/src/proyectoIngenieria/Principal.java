@@ -161,7 +161,6 @@ public class Principal {
 		
 		//Prueba de enviar correo
 		//hospital.getDoctores().get(0).enviarMail(hospital.getPacientes().get(0));
-		hospital.exportar_csv("pacientes.csv", 'P');
 		
 		
 		//Empezamos a desarrollar el menu
