@@ -150,14 +150,18 @@ public class Principal {
 		System.out.println();*/
 		
 		//Prueba Exportar doc de 'D' (Doctores) (Cada uno con su respectivo archivo de pacientes
-		//hospital.exportar_csv("docs.csv", 'D');
+		/*hospital.exportar_csv("docs.csv", 'D');*/
 		
 		//Prueba Exportar el archivo login de doctores (usuarios)
-		//exportar_contrasenas(hospital.getDoctores());
+		/*exportar_contrasenas(hospital.getDoctores());*/
 		
 		//Prueba de la busqueda filtrada
-		//hospital.filtrar_doctores("area", Area.PEDIATRIA);
-		//hospital.filtrar_pacientes("fecha de nacimiento", "07/02/97");
+		/*hospital.filtrar_doctores("area", Area.PEDIATRIA);
+		hospital.filtrar_pacientes("fecha de nacimiento", "07/02/97");*/
+		
+		//Prueba de enviar correo
+		//hospital.getDoctores().get(0).enviarMail(hospital.getPacientes().get(0));
+		hospital.exportar_csv("pacientes.csv", 'P');
 		
 		
 		//Empezamos a desarrollar el menu
