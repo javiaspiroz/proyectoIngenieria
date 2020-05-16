@@ -187,7 +187,7 @@ public class Doctores {
 			MimeMessage msg = new MimeMessage(session);
 			msg.setFrom(new InternetAddress(origen));
 			msg.addRecipient(Message.RecipientType.TO, new InternetAddress(paciente.getEmail()));
-			msg.setSubject("Subject Diagnóstico de la cita del " + ult_cita.getFecha_str());
+			msg.setSubject("Diagnóstico de la cita del " + ult_cita.getFecha_str());
 			msg.setText("Hola, " + paciente.getNombre() + " " + paciente.getApellido() + "\n"
 					+ "\nGracias por confiar en nosotros.\nA continuación la información de su última cita médica.\n "
 					+ "\nFecha: " + ult_cita.getFecha_str() + "\nPaciente: " + paciente.getNombre() + " "
