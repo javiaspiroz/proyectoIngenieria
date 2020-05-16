@@ -3,6 +3,16 @@ package proyectoIngenieria;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Properties;
+
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 public class Doctores {
 
@@ -138,27 +148,84 @@ public class Doctores {
 		return null;
 		
 	}
-	public void enviar_email(Pacientes pacientes) {
+	
+	public void enviarMail(Pacientes paciente) {
+		//Origen
+		final String fromEmail = "merakiteamapps@gmail.com";
+		final String password = "proyectos2020";
 		
+		Properties properties = new Properties();
+		properties.put("mail.smtp.auth", "true");
+		properties.put("mail.smtp.starttls.enable", "true");
+		properties.put("mail.smtp.host", "smtp.gmail.com");
+		properties.put("mail.smtp.port", "587");
+		
+		Session session = Session.getInstance(properties, new javax.mail.Authenticator() {
+			protected PasswordAuthentication getPasswordAuthentication() {
+				return new PasswordAuthentication(fromEmail,password);
+			}
+		});
+
+		Message mensaje = prepararMensaje(session, fromEmail, paciente);
+
+		try {
+			Transport.send(mensaje);
+		} catch (MessagingException e) {
+			System.out.println("Ocurrió un error: No se pudo enviar el correo. ");
+		}
+		System.out.println("Email enviado");
+
 	}
+
+	public static Message prepararMensaje(Session session, String origen, Pacientes paciente) {
+
+		// Citas ult_cita = null;
+
+		try {
+			Citas ult_cita = paciente.getRegistro_citas().get(paciente.getRegistro_citas().size() - 1);
+
+			MimeMessage msg = new MimeMessage(session);
+			msg.setFrom(new InternetAddress(origen));
+			msg.addRecipient(Message.RecipientType.TO, new InternetAddress(paciente.getEmail()));
+			msg.setSubject("Subject Diagnóstico de la cita del " + ult_cita.getFecha_str());
+			msg.setText("Hola, " + paciente.getNombre() + " " + paciente.getApellido() + "\n"
+					+ "\nGracias por confiar en nosotros.\nA continuación la información de su última cita médica.\n "
+					+ "\nFecha: " + ult_cita.getFecha_str() + "\nPaciente: " + paciente.getNombre() + " "
+					+ paciente.getApellido() + "\nDiágnostico: " + ult_cita.getDiagnostico()
+					+ "\nTratamiento: " + ult_cita.getMedicamiento());
+			return msg;
+
+		} catch (AddressException e) {
+			System.out.println("Ocurrio un error con la dirección de correo proporcionada");
+		} catch (MessagingException e) {
+			System.out.println("Ocurrió un error con el mensaje del correo");
+		} catch (ArrayIndexOutOfBoundsException e) {
+			System.out.println("El paciente no tiene ninguna cita registrada");
+		}
+
+		return null;
+	}
+
 	public int stats_pacientes_total() {
 		return 0;
-		
+
 	}
+
 	public void stats_PacxHospital(int numeroH) {
-		
+
 	}
+
 	public void PacxArea(int numeroA) {
-		
+
 	}
-	
-	//Metodos aux
+
+	// Metodos aux
 	@Override
 	public String toString() {
 
-		return apellido + "\t\t" + nombre + "\t\t" + getFecha_nacimiento_str() + "\t\t" + area + "\t" + dni + "\t" + telefono + "\t\t"
-				+ email + "\t" + direccion + "\t\t" + "pac_" + dni + ".csv" + "\t";
+		return apellido + "\t\t" + nombre + "\t\t" + getFecha_nacimiento_str() + "\t\t" + area + "\t" + dni + "\t"
+				+ telefono + "\t\t" + email + "\t" + direccion + "\t\t" + "pac_" + dni + ".csv" + "\t";
 
 	}
-	
+
 }
