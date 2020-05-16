@@ -1,5 +1,6 @@
 package proyectoIngenieria;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Citas {
@@ -8,22 +9,27 @@ public class Citas {
 	private Date fecha ;
 	private String diagnostico ;
 	private String medicamientos ;
-	private String cantidad ; 
-	private String frecuencia ;
+	/*private String cantidad ; 
+	private String frecuencia ;*/
 	
 	//Constructor
-	public Citas(Date fecha, String diagnostico, String medicamientos, String cantidad, String frecuencia) {
+	public Citas(Date fecha, String diagnostico, String medicamientos) {
 		this.fecha = fecha;
 		this.diagnostico = diagnostico;
 		this.medicamientos = medicamientos;
-		this.cantidad = cantidad;
-		this.frecuencia = frecuencia;
+		/*this.cantidad = cantidad;
+		this.frecuencia = frecuencia;*/
 	}
 	
 	//Getters y Setters
 	public Date getFecha() {
 		return fecha;
 	}
+	public String getFecha_str() {
+		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yy");
+		return format.format(fecha);
+	}
+	
 	public void setFecha(Date fecha) {
 		this.fecha = fecha;
 	}
@@ -39,7 +45,7 @@ public class Citas {
 	public void setMedicamiento(String medicamiento) {
 		this.medicamientos = medicamiento;
 	}
-	public String getCantidad() {
+	/*public String getCantidad() {
 		return cantidad;
 	}
 	public void setCantidad(String cantidad) {
@@ -50,7 +56,7 @@ public class Citas {
 	}
 	public void setFrecuencia(String frecuencia) {
 		this.frecuencia = frecuencia;
-	}
+	}*/
 	
 	
 }
