@@ -120,7 +120,7 @@ public class Principal {
 			System.out.println("Los datos se han guardado en el fichero de login" );
 
 		} catch (Exception ex) {
-			System.out.println("Mensaje de la excepciÃ³n: " + ex.getMessage());
+			System.out.println("Mensaje de la excepcion: " + ex.getMessage());
 		}
 	}
 	
@@ -166,9 +166,8 @@ public class Principal {
 		//Empezamos a desarrollar el menu
 		int decision=0;
 		do{
-			System.out.println("Â¿QuÃ© tipo de usuario es?\n 1. Administrador\n 2. Doctor\n 3. Salir del programa");
-			
-		//peta si no meto un numero en la opcion, no me acaba de salir la solucion (en el de analisis estaba bien)
+			System.out.println("¿Que tipo de usuario es?\n 1. Administrador\n 2. Doctor\n 3. Salir del programa");
+		
 		while (!sc.hasNextInt()) {
 			System.out.print("ERROR. \nIntroduzca un numero (entero) por favor:");
 			sc.next();	
@@ -178,21 +177,22 @@ public class Principal {
 			
 			switch(decision){
 				case 1:
-					//admin
-					System.out.println("admin");
-					//hacer login antes. 3 intentos maximo
+					//admin: login con 3 intentos maximo
 					PowerUser poweruser=(PowerUser)validar_usuario(hospital, "admin", 3);
+					System.out.println("Bienvenido " + poweruser.getNombre() + " " + poweruser.getApellido());
 					while(decision!=19 && poweruser!=null) {
-						System.out.println("Bienvenido " + poweruser.getNombre() + " " + poweruser.getApellido());
-						System.out.println("ï¿½Quï¿½ desea hacer?\n 1. Buscar pacientes\n 2. Buscar doctores\n 3. Importar CSV\n "
+						System.out.println("¿Que desea hacer?\n 1. Buscar pacientes\n 2. Buscar doctores\n 3. Importar CSV\n "
 								+ "4. Exportar CSV\n 5. Mostrar doctores\n 6. Mostrar pacientes\n 7. Dar de alta a un doctor\n "
 								+ "8. Dar de alta a un paciente\n 9. Dar de baja a un doctor\n 10. Dar de baja a un paciente\n "
 								+ "11. Asignar paciente a un doctor\n 12. Eliminar un paciente de un doctor\n 12. Cambiar "
-								+ "contraseï¿½a\n 13. Cambiar contraseï¿½a a un doctor\n 14. Total de pacientes\n 15. Pacientes por ï¿½rea\n"
-								+ " 16. Pacientes por doctor\n 17. Aï¿½adir cita\n 18. Editar cita\n 19. Volver\n");
+								+ "contraseña\n 13. Cambiar contraseña a un doctor\n 14. Total de pacientes\n 15. Pacientes por area\n"
+								+ " 16. Pacientes por doctor\n 17. Anadir cita\n 18. Editar cita\n 19. Volver\n");
 						
-						if(sc.hasNextInt())
-							decision=sc.nextInt();
+						while (!sc.hasNextInt()) {
+							System.out.print("ERROR. \nIntroduzca un numero (entero) por favor:");
+							sc.next();	
+						}
+						decision=sc.nextInt();
 						
 						switch(decision){
 						case 1:
@@ -253,7 +253,7 @@ public class Principal {
 							System.out.println("Volver a elegir tipo de usuario");
 							break;	
 						default:
-							System.out.println("Por favor, introduzca un valor vï¿½lido.");
+							System.out.println("Por favor, introduzca un valor valido.");
 							break;
 						}
 						
@@ -262,15 +262,20 @@ public class Principal {
 				
 					break;				
 				case 2:
-					//doc
-					System.out.println("doc");
-					//hacer login antes. 3 intentos maximo
+					//doc: login con 3 intentos maximo
 					Doctores user=(Doctores) validar_usuario(hospital, "doc", 3);
+					System.out.println("Bienvenido " + user.getNombre() + " " + user.getApellido());
 					while(decision!=10 && user!=null) {
-						System.out.println("Bienvenido " + user.getNombre() + " " + user.getApellido());
-						System.out.println("ï¿½Quï¿½ desea hacer?\n 1. Mostrar pacientes\n 2. Buscar pacientes\n 3. Mostrar citas\n"
-								+ " 4. Eliminar cita\n 5. ï¿½ltima modificaciï¿½n del historial de citas\n 6. Enviar mail\n 7. "
-								+ "Pacientes totales\n 8. Pacientes por Hospital\n 9. Pacientes por ï¿½rea\n 10. Volver\n");
+						
+						System.out.println("¿Que desea hacer?\n 1. Mostrar pacientes\n 2. Buscar pacientes\n 3. Mostrar citas\n"
+								+ " 4. Eliminar cita\n 5. Ultima modificacion del historial de citas\n 6. Enviar mail\n 7. "
+								+ "Pacientes totales\n 8. Pacientes por Hospital\n 9. Pacientes por area\n 10. Volver\n");
+						
+						while (!sc.hasNextInt()) {
+							System.out.print("ERROR. \nIntroduzca un numero (entero) por favor:");
+							sc.next();	
+						}
+						decision=sc.nextInt();
 						
 						switch(decision){
 						case 1:
@@ -304,11 +309,10 @@ public class Principal {
 							System.out.println("Volver a elegir tipo de usuario");
 							break;	
 						default:
-							System.out.println("Por favor, introduzca un valor vï¿½lido.");
+							System.out.println("Por favor, introduzca un valor valido.");
 							break;
 						}
-						if(sc.hasNextInt())
-							decision=sc.nextInt();
+						
 					}
 					
 					break;
@@ -318,7 +322,7 @@ public class Principal {
 					System.out.println("Fin del programa, gracias por confiar en Clinic Admin.");
 					break;
 				default:
-					System.out.println("Por favor, introduzca un valor vï¿½lido.");
+					System.out.println("Por favor, introduzca un valor valido.");
 					break;
 			}		
 			System.out.println();
