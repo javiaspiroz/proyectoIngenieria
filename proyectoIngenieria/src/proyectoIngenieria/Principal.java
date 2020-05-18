@@ -180,13 +180,23 @@ public class Principal {
 					//admin: login con 3 intentos maximo
 					PowerUser poweruser=(PowerUser)validar_usuario(hospital, "admin", 3);
 					System.out.println("Bienvenido " + poweruser.getNombre() + " " + poweruser.getApellido());
-					while(decision!=19 && poweruser!=null) {
-						System.out.println("¿Que desea hacer?\n 1. Buscar pacientes\n 2. Buscar doctores\n 3. Importar CSV\n "
+					
+					//ahora localizamos la posicion del poweruser dentro del arraylist
+					int position=-1;
+					for (int i=0; i<hospital.getPowerUser().size(); i++){
+						if (hospital.getPowerUser().get(i).getDni()==poweruser.getDni()){
+							position=i;//guardamos la posicion del poweruser
+						}
+					}
+					System.out.println("Posicion en el arraylist de powerusers "+position);
+					
+					while(decision!=20 && poweruser!=null) {
+						System.out.println("\n¿Que desea hacer?\n 1. Buscar pacientes\n 2. Buscar doctores\n 3. Importar CSV\n "
 								+ "4. Exportar CSV\n 5. Mostrar doctores\n 6. Mostrar pacientes\n 7. Dar de alta a un doctor\n "
 								+ "8. Dar de alta a un paciente\n 9. Dar de baja a un doctor\n 10. Dar de baja a un paciente\n "
-								+ "11. Asignar paciente a un doctor\n 12. Eliminar un paciente de un doctor\n 12. Cambiar "
-								+ "contraseña\n 13. Cambiar contraseña a un doctor\n 14. Total de pacientes\n 15. Pacientes por area\n"
-								+ " 16. Pacientes por doctor\n 17. Anadir cita\n 18. Editar cita\n 19. Volver\n");
+								+ "11. Asignar paciente a un doctor\n 12. Eliminar un paciente de un doctor\n 13. Cambiar "
+								+ "contraseña\n 14. Cambiar contraseña a un doctor\n 15. Total de pacientes\n 16. Pacientes por area\n"
+								+ " 17. Pacientes por doctor\n 18. Anadir cita\n 19. Editar cita\n 20. Volver\n");
 						
 						while (!sc.hasNextInt()) {
 							System.out.print("ERROR. \nIntroduzca un numero (entero) por favor:");
@@ -195,68 +205,96 @@ public class Principal {
 						decision=sc.nextInt();
 						
 						switch(decision){
-						case 1:
-							
+						case 1://buscar pacientes
+							System.out.println("¿Porque criterio desea buscar?");
+							String filtroP = sc.next();
+							System.out.println("Introduzca el termino a buscar");
+							Object busquedaP = sc.next();
+							hospital.filtrar_pacientes(filtroP, busquedaP);
 							break;
-						case 2:
-							
+						case 2://buscar doctores
+							System.out.println("¿Porque criterio desea buscar?");
+							String filtroD = sc.next();
+							System.out.println("Introduzca el termino a buscar");
+							Object busquedaD = sc.next();
+							hospital.filtrar_doctores(filtroD, busquedaD);
 							break;
-						case 3:
-								
-								break;
-						case 4:
-							
+						case 3://importar csv
+							hospital.importar_csv_doctores();
+							hospital.importar_csv_poweruser();
+							System.out.println("Indique la ruta del archivo CSV de pacientes");
+							String rutaI = sc.next();
+							hospital.importar_csv_pacientes(rutaI);
+							System.out.println("El proceso de importacion ha finalizado");
 							break;
-						case 5:
-							poweruser.mostrar_doc();
+						case 4://exportar csv
+							System.out.println("Indique la ruta donde quiere exportar");
+							String rutaE = sc.next();
+							System.out.println("¿Que tipo de contenido quiere exportar?\n Introduzca P (pacientes), "
+									+ "D (doctores) o W (administradores)");
+							char tipo = 'A';
+							while (!sc.hasNext() && sc.next().charAt(0)!='D' && sc.next().charAt(0)!='W' && sc.next().charAt(0)!='P') {
+								System.out.print("ERROR. \nIntroduzca D, P o W por favor:");
+								sc.next();	
+							}
+							tipo=sc.next().charAt(0);
+							hospital.exportar_csv(rutaE, tipo);
+							System.out.println("El proceso de exportacion ha finalizado");
 							break;
-						case 6:
-							
+						case 5://mostrar doctores
+							hospital.mostrar_doc();
 							break;
-						case 7:
+						case 6://mostrar pacientes
+							hospital.mostrar_pac();
+							break;
+						case 7://dar alta a doctor
 							
 							break;	
-						case 8:
+						case 8://dar alta paciente
 							
 							break;	
-						case 9:
+						case 9://dar baja doctor
 							
 							break;
-						case 10:
+						case 10://dar baja paciente
 							
 							break;
-						case 11:
+						case 11://asignar paciente a doctor
 							
 							break;
-						case 12:
+						case 12://quitar paciente de doctor
 							
 							break;
-						case 13:
+						case 13://cambiar contrasena
+							System.out.println("Introduzca su nueva contrasena");
+							String pwPU = sc.next();
+							poweruser.setContrasenia(pwPU);
+							break;
+						case 14://cambiar contrasena a doctor
 							
 							break;
-						case 14:
+						case 15://total pacientes
+							System.out.println("El numero total de pacientes del hospital es "+poweruser.stats_TotalPac());
+							break;
+						case 16://pacientes por area
+							poweruser.stats_PacxArea();
+							break;
+						case 17://pacientes por doctor
+							poweruser.stats_PacxDoc();
+							break;
+						case 18://añadir cita
 							
 							break;
-						case 15:
+						case 19://editar cita
 							
 							break;
-						case 16:
-							
-							break;
-						case 17:
-							
-							break;
-						case 18:
-							
-							break;	
-						case 19:
+						case 20:
 							System.out.println("Volver a elegir tipo de usuario");
 							break;	
 						default:
 							System.out.println("Por favor, introduzca un valor valido.");
 							break;
 						}
-						
 						
 					}
 				
@@ -267,7 +305,7 @@ public class Principal {
 					System.out.println("Bienvenido " + user.getNombre() + " " + user.getApellido());
 					while(decision!=10 && user!=null) {
 						
-						System.out.println("¿Que desea hacer?\n 1. Mostrar pacientes\n 2. Buscar pacientes\n 3. Mostrar citas\n"
+						System.out.println("\n¿Que desea hacer?\n 1. Mostrar pacientes\n 2. Buscar pacientes\n 3. Mostrar citas\n"
 								+ " 4. Eliminar cita\n 5. Ultima modificacion del historial de citas\n 6. Enviar mail\n 7. "
 								+ "Pacientes totales\n 8. Pacientes por Hospital\n 9. Pacientes por area\n 10. Volver\n");
 						
