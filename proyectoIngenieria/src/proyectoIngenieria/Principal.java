@@ -3,12 +3,13 @@ package proyectoIngenieria;
 
 import java.io.FileWriter;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Scanner;
+
+import com.sun.org.apache.xerces.internal.impl.xpath.regex.ParseException;
 
 import proyectoIngenieria.Doctores.Area;
 
@@ -84,7 +85,7 @@ public class Principal {
 	 
 	 /*Para exportar un archivo de usuarios y contrasenas (tener uno para users y
 	 * otro para powerusers) al finalizar el programa (y solo por el, el poweruser no debe poder)*/
-	public static void exportar_contrasenas(@SuppressWarnings("rawtypes") ArrayList usuarios) {
+	public static void exportar_contrasenas(ArrayList usuarios) {
 		FileWriter fichero = null;
 
 		try {
@@ -92,7 +93,6 @@ public class Principal {
 			// Para exportar un archivo de doctores
 			if (usuarios.get(0) instanceof Doctores) {
 				fichero = new FileWriter("login_usuarios.csv");
-				@SuppressWarnings("unchecked")
 				ArrayList<Doctores> exp_docs= (ArrayList<Doctores>) usuarios;
 				Iterator<Doctores> itr = exp_docs.iterator();
 				fichero.write("Apellido;Nombre;fecha de nacimiento ;Area;DNI;telefono;email;direccion;archivo de pacientes;contraseñas;\n");
@@ -107,7 +107,6 @@ public class Principal {
 			// Para exportar un archivo de powerusers
 			else if (usuarios.get(0) instanceof PowerUser) {
 				fichero = new FileWriter("login_powerusers.csv");
-				@SuppressWarnings("unchecked")
 				ArrayList<PowerUser> exp_pu = (ArrayList<PowerUser>) usuarios;
 				Iterator<PowerUser> itr = exp_pu.iterator();
 				fichero.write("Apellido;Nombre;fecha de nacimiento;DNI;telefono;email;direccion;contraseñas;\n");
@@ -263,10 +262,10 @@ public class Principal {
 							try {
 								DateFormat sourceFormat = new SimpleDateFormat("dd/MM/yyyy");
 								fecha = sourceFormat.parse(fechastr);
-							} catch (ParseException e) {
+							} catch (ParseException | java.text.ParseException e) {
 								System.out.print("Mal formato de fecha.");
 							}
-							System.out.println("Introduzca el area");		
+							System.out.println("Introduzca el area");							
 							String areastr = sc.next();
 							Area area=Enum.valueOf(Doctores.Area.class, areastr);
 							System.out.println("Introduzca el DNI");
@@ -299,7 +298,7 @@ public class Principal {
 							try {
 								DateFormat sourceFormat = new SimpleDateFormat("dd/MM/yyyy");
 								fecha2 = sourceFormat.parse(fechastr2);
-							} catch (ParseException e) {
+							} catch (ParseException | java.text.ParseException e) {
 								System.out.print("Mal formato de fecha.");
 							}
 							System.out.println("Introduzca el DNI");
