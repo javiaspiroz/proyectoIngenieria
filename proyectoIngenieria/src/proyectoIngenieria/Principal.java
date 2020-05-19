@@ -169,8 +169,8 @@ public class Principal {
 		//hospital.getDoctores().get(0).enviarMail(hospital.getPacientes().get(0));
 		
 		//Pruebas stats
-		hospital.getPowerUser().get(0).add_pac(hospital.getPacientes().get(0), hospital.getDoctores().get(0));
-		hospital.getPowerUser().get(0).stats_PacxDoc();
+		//hospital.getPowerUser().get(0).add_pac(hospital.getPacientes().get(0), hospital.getDoctores().get(0));
+		//hospital.getPowerUser().get(0).stats_PacxDoc();
 		
 		//Empezamos a desarrollar el menu
 		int decision=0;
