@@ -2,6 +2,9 @@ package proyectoIngenieria;
 
 
 import java.io.FileWriter;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -81,7 +84,7 @@ public class Principal {
 	 
 	 /*Para exportar un archivo de usuarios y contrasenas (tener uno para users y
 	 * otro para powerusers) al finalizar el programa (y solo por el, el poweruser no debe poder)*/
-	public static void exportar_contrasenas(ArrayList usuarios) {
+	public static void exportar_contrasenas(@SuppressWarnings("rawtypes") ArrayList usuarios) {
 		FileWriter fichero = null;
 
 		try {
@@ -89,6 +92,7 @@ public class Principal {
 			// Para exportar un archivo de doctores
 			if (usuarios.get(0) instanceof Doctores) {
 				fichero = new FileWriter("login_usuarios.csv");
+				@SuppressWarnings("unchecked")
 				ArrayList<Doctores> exp_docs= (ArrayList<Doctores>) usuarios;
 				Iterator<Doctores> itr = exp_docs.iterator();
 				fichero.write("Apellido;Nombre;fecha de nacimientoÂ ;Area;DNI;telefono;email;direccion;archivo de pacientes;contraseÃ±as;\n");
@@ -103,6 +107,7 @@ public class Principal {
 			// Para exportar un archivo de powerusers
 			else if (usuarios.get(0) instanceof PowerUser) {
 				fichero = new FileWriter("login_powerusers.csv");
+				@SuppressWarnings("unchecked")
 				ArrayList<PowerUser> exp_pu = (ArrayList<PowerUser>) usuarios;
 				Iterator<PowerUser> itr = exp_pu.iterator();
 				fichero.write("Apellido;Nombre;fecha de nacimiento;DNI;telefono;email;direccion;contraseÃ±as;\n");
@@ -166,7 +171,7 @@ public class Principal {
 		//Empezamos a desarrollar el menu
 		int decision=0;
 		do{
-			System.out.println("¿Que tipo de usuario es?\n 1. Administrador\n 2. Doctor\n 3. Salir del programa");
+			System.out.println("ï¿½Que tipo de usuario es?\n 1. Administrador\n 2. Doctor\n 3. Salir del programa");
 		
 		while (!sc.hasNextInt()) {
 			System.out.print("ERROR. \nIntroduzca un numero (entero) por favor:");
@@ -191,11 +196,11 @@ public class Principal {
 					System.out.println("Posicion en el arraylist de powerusers "+position);//borrar print en version final
 					
 					while(decision!=20 && poweruser!=null) {
-						System.out.println("\n¿Que desea hacer?\n 1. Buscar pacientes\n 2. Buscar doctores\n 3. Importar CSV\n "
+						System.out.println("\nï¿½Que desea hacer?\n 1. Buscar pacientes\n 2. Buscar doctores\n 3. Importar CSV\n "
 								+ "4. Exportar CSV\n 5. Mostrar doctores\n 6. Mostrar pacientes\n 7. Dar de alta a un doctor\n "
 								+ "8. Dar de alta a un paciente\n 9. Dar de baja a un doctor\n 10. Dar de baja a un paciente\n "
 								+ "11. Asignar paciente a un doctor\n 12. Eliminar un paciente de un doctor\n 13. Cambiar "
-								+ "contraseña\n 14. Cambiar contraseña a un doctor\n 15. Total de pacientes\n 16. Pacientes por area\n"
+								+ "contraseï¿½a\n 14. Cambiar contraseï¿½a a un doctor\n 15. Total de pacientes\n 16. Pacientes por area\n"
 								+ " 17. Pacientes por doctor\n 18. Anadir cita\n 19. Editar cita\n 20. Volver\n");
 						
 						while (!sc.hasNextInt()) {
@@ -206,14 +211,14 @@ public class Principal {
 						
 						switch(decision){
 						case 1://buscar pacientes
-							System.out.println("¿Porque criterio desea buscar?");
+							System.out.println("ï¿½Porque criterio desea buscar?");
 							String filtroP = sc.next();
 							System.out.println("Introduzca el termino a buscar");
 							Object busquedaP = sc.next();
 							hospital.filtrar_pacientes(filtroP, busquedaP);
 							break;
 						case 2://buscar doctores
-							System.out.println("¿Porque criterio desea buscar?");
+							System.out.println("ï¿½Porque criterio desea buscar?");
 							String filtroD = sc.next();
 							System.out.println("Introduzca el termino a buscar");
 							Object busquedaD = sc.next();
@@ -230,7 +235,7 @@ public class Principal {
 						case 4://exportar csv
 							System.out.println("Indique la ruta donde quiere exportar");
 							String rutaE = sc.next();
-							System.out.println("¿Que tipo de contenido quiere exportar?\n Introduzca P (pacientes), "
+							System.out.println("ï¿½Que tipo de contenido quiere exportar?\n Introduzca P (pacientes), "
 									+ "D (doctores) o W (administradores)");
 							char tipo = 'A';
 							while (!sc.hasNext() && (sc.next().charAt(0)!='D' || sc.next().charAt(0)!='W' || sc.next().charAt(0)!='P')) {
@@ -253,9 +258,17 @@ public class Principal {
 							System.out.println("Introduzca el apellido");
 							String apellido = sc.next();
 							System.out.println("Introduzca el fecha de nacimiento");
-							Date fecha=sc.next();
-							System.out.println("Introduzca el area");							
-							Area area=sc.next();
+							String fechastr = sc.next();
+							Date fecha = null;
+							try {
+								DateFormat sourceFormat = new SimpleDateFormat("dd/MM/yyyy");
+								fecha = sourceFormat.parse(fechastr);
+							} catch (ParseException e) {
+								System.out.print("Mal formato de fecha.");
+							}
+							System.out.println("Introduzca el area");		
+							String areastr = sc.next();
+							Area area=Enum.valueOf(Doctores.Area.class, areastr);
 							System.out.println("Introduzca el DNI");
 							String dni = sc.next();
 							System.out.println("Introduzca el telefono");
@@ -280,7 +293,15 @@ public class Principal {
 							System.out.println("Introduzca el apellido");
 							String apellido2 = sc.next();
 							System.out.println("Introduzca el fecha de nacimiento");
-							Date fecha2=sc.next();
+							String fechastr2 = sc.next();
+							Date fecha2 = null;
+							
+							try {
+								DateFormat sourceFormat = new SimpleDateFormat("dd/MM/yyyy");
+								fecha2 = sourceFormat.parse(fechastr2);
+							} catch (ParseException e) {
+								System.out.print("Mal formato de fecha.");
+							}
 							System.out.println("Introduzca el DNI");
 							String dni2 = sc.next();
 							System.out.println("Introduzca el telefono");
@@ -347,7 +368,7 @@ public class Principal {
 						case 17://pacientes por doctor
 							poweruser.stats_PacxDoc();
 							break;
-						case 18://añadir cita
+						case 18://aï¿½adir cita
 							
 							
 							
@@ -372,7 +393,7 @@ public class Principal {
 					System.out.println("Bienvenido " + user.getNombre() + " " + user.getApellido());
 					while(decision!=10 && user!=null) {
 						
-						System.out.println("\n¿Que desea hacer?\n 1. Mostrar pacientes\n 2. Buscar pacientes\n 3. Mostrar citas\n"
+						System.out.println("\nï¿½Que desea hacer?\n 1. Mostrar pacientes\n 2. Buscar pacientes\n 3. Mostrar citas\n"
 								+ " 4. Eliminar cita\n 5. Ultima modificacion del historial de citas\n 6. Enviar mail\n 7. "
 								+ "Pacientes totales\n 8. Pacientes por Hospital\n 9. Pacientes por area\n 10. Volver\n");
 						
