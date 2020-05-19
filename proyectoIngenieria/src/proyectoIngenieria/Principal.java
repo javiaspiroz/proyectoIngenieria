@@ -17,6 +17,7 @@ public class Principal {
 	// Tenia esta funcion hecha para validar usuario y contraseña del examen del
 	// semestre pasado de programacion
 	public static Object validar_usuario(Hospital hospital, String tipo, int N) {
+		@SuppressWarnings("resource")
 		Scanner teclado = new Scanner(System.in);
 		String usuario = "";
 		String contrasena = "";
@@ -85,7 +86,8 @@ public class Principal {
 	 
 	 /*Para exportar un archivo de usuarios y contrasenas (tener uno para users y
 	 * otro para powerusers) al finalizar el programa (y solo por el, el poweruser no debe poder)*/
-	public static void exportar_contrasenas(ArrayList usuarios) {
+	@SuppressWarnings("unchecked")
+	public static void exportar_contrasenas(@SuppressWarnings("rawtypes") ArrayList usuarios) {
 		FileWriter fichero = null;
 
 		try {
@@ -166,6 +168,9 @@ public class Principal {
 		//Prueba de enviar correo
 		//hospital.getDoctores().get(0).enviarMail(hospital.getPacientes().get(0));
 		
+		//Pruebas stats
+		hospital.getPowerUser().get(0).add_pac(hospital.getPacientes().get(0), hospital.getDoctores().get(0));
+		hospital.getPowerUser().get(0).stats_PacxDoc();
 		
 		//Empezamos a desarrollar el menu
 		int decision=0;
