@@ -4,7 +4,13 @@ package proyectoIngenieria;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import proyectoIngenieria.Doctores.Area;
 
 public class PowerUser {
 
@@ -204,16 +210,90 @@ public class PowerUser {
 	}
 	
 	public int stats_TotalPac() {
-		return 0;
-		
+		return hospital.getPacientes().size();
 	}
-	
+
 	public void stats_PacxArea() {
+		Map<String, List<Pacientes>> mapPacientesPorArea = new HashMap<String, List<Pacientes>>();
+		ArrayList<Doctores> doctores = hospital.getDoctores();
+		for(Doctores doctor: doctores) {
+			Area area = doctor.getArea();
+			if(area != null) {
+				String key = area.name();
+				List<Pacientes> lstPacientes = mapPacientesPorArea.get(key);
+				if(lstPacientes == null) {
+					lstPacientes = new ArrayList<Pacientes>();
+					mapPacientesPorArea.put(key, lstPacientes);
+				}
+				List<Pacientes> pacientesDoctor = doctor.getPacientes();
+				lstPacientes.addAll(pacientesDoctor);
+			}
+		}
+		
+		Set<String>  keySet = mapPacientesPorArea.keySet();
+		for(String nombreArea: keySet) {
+			System.out.println("Area: "+nombreArea);
+			List<Pacientes> pacientes = mapPacientesPorArea.get(nombreArea);
+			for(Pacientes pac: pacientes) {
+				System.out.println("\tPaciente "+pac.getRegistro_citas()+" "+pac.getApellido());
+			}
+			System.out.println("\n");
+		}
+		/*
+		 * Doctor1 (a1)
+		 *   pac1
+		 *   pac2
+		 *   
+		 *  Doctor2 (a2)
+		 *    pac3
+		 *    pac4
+		 *    pac5
+		 *
+		 *  Doctor3 (a2)
+		 *    pac6
+		 *    pac7
+		 *    
+		 *    a1 
+		 *    pac1, 
+		 *    pac2
+		 *    
+		 *    a2
+		 *    pac3
+		 *    pac4
+		 *    pac5
+		 *    pac6
+		 *    pac7
+		 *   
+		 * */
 		
 	}
 	
 	public void stats_PacxDoc() {
+		ArrayList<Doctores> doctores = hospital.getDoctores();
+		for(Doctores doctor: doctores) {
+			System.out.println("Doctor: "+doctor.getNombre()+" "+doctor.getApellido()+"\n");
+			ArrayList<Pacientes> pacientes = hospital.getPacientes();
+			for (Pacientes pac : pacientes) {
+				System.out.println("\tPaciente "+pac.getRegistro_citas()+" "+pac.getApellido());
+			}
+			System.out.println("\n");
+		}
 		
+		/*
+		 * Doctor1 (a1)
+		 *   pac1
+		 *   pac2
+		 *   
+		 *  Doctor2 (a2)
+		 *    pac3
+		 *    pac4
+		 *    pac5
+		 *
+		 *  Doctor3 (a2)
+		 *    pac6
+		 *    pac7
+		 *   
+		 * */
 	}
 	
 	public boolean editar_cita(Date fecha, Pacientes pacientes, String campo, String new_dato) {
