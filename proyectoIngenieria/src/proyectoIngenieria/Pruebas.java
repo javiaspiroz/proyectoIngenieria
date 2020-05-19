@@ -22,5 +22,6 @@ public class Pruebas {
 		hospital.exportar_csv("pacientes_pruebas.csv", 'P');
 		//File fichero = new File("pacientes_pruebas.csv");
 		assertTrue(new File("pacientes_pruebas.csv").exists());
+		System.out.println("Prueba Radu");
 	}
 }
