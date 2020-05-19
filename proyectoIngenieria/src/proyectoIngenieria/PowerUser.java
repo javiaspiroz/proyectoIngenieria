@@ -278,7 +278,6 @@ public class PowerUser {
 			}
 			System.out.println("\n");
 		}
-		
 		/*
 		 * Doctor1 (a1)
 		 *   pac1
