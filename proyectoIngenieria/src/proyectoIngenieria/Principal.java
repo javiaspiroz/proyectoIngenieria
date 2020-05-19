@@ -311,7 +311,7 @@ public class Principal {
 							System.out.println("Introduzca el telefono");
 							while (!sc.hasNextInt()) {
 								System.out.print("ERROR. \nIntroduzca un numero (entero) por favor:");
-								sc.nextInt();	
+								sc.next();
 							}
 							int tel2=sc.nextInt();
 							System.out.println("Introduzca el e-mail");
@@ -321,7 +321,7 @@ public class Principal {
 							System.out.println("Introduzca el numero de seguridad social");
 							while (!sc.hasNextLong()) {
 								System.out.print("ERROR. \nIntroduzca un numero (entero) por favor:");
-								sc.nextLong();	
+								sc.next();	
 							}
 							long nss = sc.nextLong();	
 							Pacientes auxP = new Pacientes (apellido2,nombre2,fecha2,dni2,tel2,mail2,dir2,nss);
