@@ -94,6 +94,14 @@ public class PowerUser {
 	public void setContrasenia(String contrasenia) {
 		this.contrasenia = contrasenia;
 	}
+	
+	//Para la interfaz
+		public Hospital getHospital() {
+			return hospital;
+		}
+		public void setHospital(Hospital hospital) {
+			this.hospital = hospital;
+		}
 
 	
 	//Metodos de poweruser
@@ -397,5 +405,68 @@ public class PowerUser {
 
 		return posicion;
 	}
+	
+	//Para la interfaz
+		public String[][] getDatostabla(char c) {
+			if (c=='d'){
+				String[][] datos = new String[hospital.getDoctores().size()+1][9];
+				Iterator<Doctores> itr = hospital.getDoctores().iterator();
+				String[] array = {"Apellido" , "Nombre" ,"Fecha de nacimiento" , "AREA","DNI" , "telefono" , "email"
+						, "direccion" , "archivo de pacientes"};
+				datos[0] =array;
+				int i=0;
+				while (itr.hasNext()) {
+					Doctores actual = itr.next();
+					String [] array1= {actual.getApellido(), actual.getNombre(), actual.getFecha_nacimiento_str(), ""+actual.getArea(), actual.getDni(), ""+actual.getTelefono(), 
+							actual.getEmail(),actual.getDireccion(), "citas_"+actual.getDni()+".csv"};
+					datos[i+1]=array1;
+					i++;
+				}
+				return datos;
+			} else if (c == 'p') {
+				String[][] datos = new String[hospital.getPacientes().size()+1][10];
+				Iterator<Pacientes> itr = hospital.getPacientes().iterator();
+				String[] array = {"Apellido" , "Nombre" ,"Fecha de nacimiento" , "DNI" , "telefono" , "email"
+						, "direccion" , "Seguridad social" , "archivo de citas" ,"Ultima modificacion"};
+				datos[0] =array;
+				int i=0;
+				while (itr.hasNext()) {
+					Pacientes actual = itr.next();
+					String [] array1= {actual.getApellido(), actual.getNombre(), actual.getFecha_nacimiento_str(), actual.getDni(), ""+actual.getTelefono(), actual.getEmail(),
+							actual.getDireccion(), ""+actual.getSeguridad_social(), "citas_"+actual.getDni()+".csv", ""+actual.getModificacion_registro()};
+					datos[i+1]=array1;
+					i++;
+				}
+				
+				return  datos;
+			}
+			
+			return null;
+		}
+		
+		
+		/*public String toString(char c) {
+				String resultado ="";
+				
+			if (c == 'd') {
+				resultado = "Apellido\t\t" + "Nombre\t" + "Pacientes\t  "+ "Area\t" +"\n";
+				Iterator<Doctores> itr = hospital.getDoctores().iterator();
+				while (itr.hasNext()) {
+					Doctores actual = itr.next();
+					resultado += actual.getApellido() + "\t\t" + actual.getNombre() +"\t       " + (actual.getPacientes().size())
+							+ "\t  " + actual.getArea()  +"\n";
+				}
+			}
+			else if (c == 'p') {
+				resultado = "Apellido\t\t" + "Nombre\t\t" + "N seguridad social" + "\n";
+				Iterator<Pacientes> itr = hospital.getPacientes().iterator();
+				while (itr.hasNext()) {
+					Pacientes actual = itr.next();
+					resultado += actual.getApellido() + "\t" + actual.getNombre() + "\t\t" + actual.getSeguridad_social() + "\n";
+				}
+			}
+				
+				return resultado;
+			}*/
 
 }
