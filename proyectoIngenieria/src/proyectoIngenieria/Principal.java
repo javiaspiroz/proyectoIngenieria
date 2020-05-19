@@ -188,7 +188,7 @@ public class Principal {
 							position=i;//guardamos la posicion del poweruser
 						}
 					}
-					System.out.println("Posicion en el arraylist de powerusers "+position);
+					System.out.println("Posicion en el arraylist de powerusers "+position);//borrar print en version final
 					
 					while(decision!=20 && poweruser!=null) {
 						System.out.println("\n¿Que desea hacer?\n 1. Buscar pacientes\n 2. Buscar doctores\n 3. Importar CSV\n "
@@ -233,7 +233,7 @@ public class Principal {
 							System.out.println("¿Que tipo de contenido quiere exportar?\n Introduzca P (pacientes), "
 									+ "D (doctores) o W (administradores)");
 							char tipo = 'A';
-							while (!sc.hasNext() && sc.next().charAt(0)!='D' && sc.next().charAt(0)!='W' && sc.next().charAt(0)!='P') {
+							while (!sc.hasNext() && (sc.next().charAt(0)!='D' || sc.next().charAt(0)!='W' || sc.next().charAt(0)!='P')) {
 								System.out.print("ERROR. \nIntroduzca D, P o W por favor:");
 								sc.next();	
 							}
@@ -248,16 +248,81 @@ public class Principal {
 							hospital.mostrar_pac();
 							break;
 						case 7://dar alta a doctor
+							System.out.println("Introduzca el nombre");
+							String nombre = sc.next();
+							System.out.println("Introduzca el apellido");
+							String apellido = sc.next();
+							System.out.println("Introduzca el fecha de nacimiento");
+							Date fecha=sc.next();
+							System.out.println("Introduzca el area");							
+							Area area=sc.next();
+							System.out.println("Introduzca el DNI");
+							String dni = sc.next();
+							System.out.println("Introduzca el telefono");
+							while (!sc.hasNextInt()) {
+								System.out.print("ERROR. \nIntroduzca un numero (entero) por favor:");
+								sc.nextInt();	
+							}
+							int tel=sc.nextInt();
+							System.out.println("Introduzca el e-mail");
+							String mail = sc.next();
+							System.out.println("Introduzca la direccion");
+							String dir = sc.next();
+							System.out.println("Introduzca el contasena");
+							String pass = sc.next();	
 							
+							Doctores auxD = new Doctores (nombre,apellido,fecha,area,dni,tel,mail,dir,pass);
+							poweruser.alta_doc(auxD);
 							break;	
 						case 8://dar alta paciente
-							
+							System.out.println("Introduzca el nombre");
+							String nombre2 = sc.next();
+							System.out.println("Introduzca el apellido");
+							String apellido2 = sc.next();
+							System.out.println("Introduzca el fecha de nacimiento");
+							Date fecha2=sc.next();
+							System.out.println("Introduzca el DNI");
+							String dni2 = sc.next();
+							System.out.println("Introduzca el telefono");
+							while (!sc.hasNextInt()) {
+								System.out.print("ERROR. \nIntroduzca un numero (entero) por favor:");
+								sc.nextInt();	
+							}
+							int tel2=sc.nextInt();
+							System.out.println("Introduzca el e-mail");
+							String mail2 = sc.next();
+							System.out.println("Introduzca la direccion");
+							String dir2 = sc.next();
+							System.out.println("Introduzca el numero de seguridad social");
+							while (!sc.hasNextLong()) {
+								System.out.print("ERROR. \nIntroduzca un numero (entero) por favor:");
+								sc.nextLong();	
+							}
+							long nss = sc.nextLong();	
+							Pacientes auxP = new Pacientes (apellido2,nombre2,fecha2,dni2,tel2,mail2,dir2,nss);
+							poweruser.alta_pac(auxP);
 							break;	
 						case 9://dar baja doctor
-							
+							System.out.println("Introduzca el DNI del doctor");
+							String dniAUX = sc.next();
+							Doctores dborr = null;
+							for (int i=0; i<hospital.getDoctores().size(); i++){
+								if (hospital.getDoctores().get(i).getDni()==dniAUX){
+									dborr = hospital.getDoctores().get(i);
+								}
+							}
+							poweruser.baja_doc(dborr);
 							break;
 						case 10://dar baja paciente
-							
+							System.out.println("Introduzca el DNI del doctor");
+							String dniAux = sc.next();
+							Pacientes pborr = null;
+							for (int i=0; i<hospital.getPacientes().size(); i++){
+								if (hospital.getPacientes().get(i).getDni()==dniAux){
+									pborr = hospital.getPacientes().get(i);
+								}
+							}
+							poweruser.baja_pac(pborr);
 							break;
 						case 11://asignar paciente a doctor
 							
@@ -283,6 +348,8 @@ public class Principal {
 							poweruser.stats_PacxDoc();
 							break;
 						case 18://añadir cita
+							
+							
 							
 							break;
 						case 19://editar cita
