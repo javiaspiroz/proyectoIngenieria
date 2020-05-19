@@ -62,7 +62,7 @@ public class Hospital {
 	}
 
 	// Metodos
-	
+	@SuppressWarnings("resource")
 	public ArrayList<Pacientes> importar_csv_pacientes(String ruta) {
 		File fichero = new File(ruta);
 		String[][] datos = new String[contar_filas(ruta)][contar_columnas(ruta)];
@@ -94,9 +94,7 @@ public class Hospital {
 			e.printStackTrace();
 		} catch (ParseException e) {
 			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		} 
 
 		return new_pacientes;
 
@@ -134,7 +132,6 @@ public class Hospital {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-
 		return new_docs;
 
 	}
@@ -593,7 +590,6 @@ public class Hospital {
 	// Para exportar los pacientes de cada doctor individual
 	public void exportar_csv_pac(Doctores doctor) {
 		FileWriter fichero = null;
-		DateFormat sourceFormat = new SimpleDateFormat("dd/MM/yyyy");
 		try {
 
 			// Escribimos linea a linea en el fichero
@@ -624,5 +620,7 @@ public class Hospital {
 			}
 		}
 	}
+	
+	
 
 }
