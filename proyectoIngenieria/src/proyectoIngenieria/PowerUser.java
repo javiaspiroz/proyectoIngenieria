@@ -280,7 +280,7 @@ public class PowerUser {
 		ArrayList<Doctores> doctores = hospital.getDoctores();
 		for(Doctores doctor: doctores) {
 			System.out.println("Doctor: "+doctor.getNombre()+" "+doctor.getApellido()+"\n");
-			ArrayList<Pacientes> pacientes = hospital.getPacientes();
+			ArrayList<Pacientes> pacientes = doctor.getPacientes();
 			for (Pacientes pac : pacientes) {
 				System.out.println("\tPaciente "+pac.getRegistro_citas()+" "+pac.getApellido());
 			}
