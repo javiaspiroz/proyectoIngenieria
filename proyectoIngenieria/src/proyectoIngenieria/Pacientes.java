@@ -1,6 +1,7 @@
 package proyectoIngenieria;
 
 import java.util.Date;
+import java.util.Iterator;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
@@ -130,6 +131,8 @@ public class Pacientes {
 				"\t" + direccion + "\t\t" + seguridad_social + "\t\t" + "citas_"+dni+".csv" + "\t" + getModificacion_registro_str();
 				
 	}
+
+	
 	
 	
 	

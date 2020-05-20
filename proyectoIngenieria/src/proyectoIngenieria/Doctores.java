@@ -3,7 +3,12 @@ package proyectoIngenieria;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -13,6 +18,8 @@ import javax.mail.Transport;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+
+import proyectoIngenieria.Doctores.Area;
 
 public class Doctores {
 
@@ -28,6 +35,7 @@ public class Doctores {
 	private String direccion ;
 	private String contrasenia ;
 	private ArrayList<Pacientes> pacientes;
+	private ArrayList<Citas> citas;
 	
 	//Constructor1
 	public Doctores(String apellido,String nombre, Date fecha_nacimiento, Area area, String dni, int telefono,
@@ -129,23 +137,241 @@ public class Doctores {
 	
 	//Metodos
 	public void mostrar_pac(){	
+		Iterator<Pacientes> itr = pacientes.iterator();
+		System.out.println(
+				"Apellido\t\t" + "Nombre\t\t" + "Fecha de nacimiento\t" + "DNI\t\t" + "telefono\t" + "email\t\t\t"
+						+ "direccion\t\t\t\t\t" + "Seguridad social\t" + "archivo de citas\t" + "Ultima modificacion");
+		while (itr.hasNext()) {
+			Pacientes actual = itr.next();
+			System.out.println(actual);
+		}
+
+		
 	}
 	public Pacientes buscar_paciente(Object busqueda, String filtro) {
-		return null;
+		filtro = filtro.toLowerCase();
+		Pacientes actual = null;
+		
+		Iterator<Pacientes> itr = pacientes.iterator();
+		System.out.println(
+				"Apellido\t\t" + "Nombre\t\t" + "Fecha de nacimiento\t" + "DNI\t\t" + "telefono\t" + "email\t\t\t"
+						+ "direccion\t\t\t\t\t" + "Seguridad social\t" + "archivo de citas\t" + "Ultima modificacion");
+		// if (!itr.hasNext()) throw new NoSuchElementException();
+
+		while (itr.hasNext()) {
+			if (busqueda instanceof String) {
+				String search = (String) busqueda;
+				if (filtro.equals("nombre")) {
+					while (itr.hasNext()) {
+						actual = itr.next();
+						if (actual.getNombre().equals(search)) {
+							System.out.println(actual);
+						}
+					}
+				} else if (filtro.equals("apellido")) {
+					while (itr.hasNext()) {
+						actual = itr.next();
+						if (actual.getApellido().equals(search)) {
+							System.out.println(actual);
+						}
+					}
+				} else if (filtro.equals("dni")) {
+					while (itr.hasNext()) {
+						actual = itr.next();
+						if (actual.getDni().equals(search)) {
+							System.out.println(actual);
+						}
+					}
+
+				} else if (filtro.equals("email")) {
+					while (itr.hasNext()) {
+						actual = itr.next();
+						if (actual.getEmail().equals(search)) {
+							System.out.println(actual);
+						}
+					}
+
+				} else if (filtro.equals("direccion")) {
+					while (itr.hasNext()) {
+						actual = itr.next();
+						if (actual.getDireccion().contains(search)) {
+							System.out.println(actual);
+						}
+					}
+				} else if (filtro.equals("fecha de nacimiento")) {
+					//Poner la fecha de nacimiento en formato dd/mm/yy
+					while (itr.hasNext()) {
+						actual = itr.next();
+						if (actual.getFecha_nacimiento_str().equals(search)) {
+							System.out.println(actual);
+						}
+					}
+
+				} else {
+					System.out.println("No hubo resultados");
+				}
+
+				
+			} else if (busqueda instanceof Integer) {
+				int search = (Integer) busqueda;
+				if (filtro.equals("telefono")) {
+					while (itr.hasNext()) {
+						actual = itr.next();
+						if (actual.getTelefono() == search) {
+							System.out.println(actual);
+						}
+					}
+				} else {
+					System.out.println("No hubo resultados");
+				}
+
+			} else if (busqueda instanceof Long) {
+				long search = (Long) busqueda;
+				if (filtro.equals("seguridad social")) {
+					while (itr.hasNext()) {
+						actual = itr.next();
+						if (actual.getSeguridad_social() == search) {
+							System.out.println(actual);
+						}
+					}
+				} else {
+					System.out.println("No hubo resultados");
+				}
+			}
+
+		}
+		return actual;
 	}
-	public void mostrar_citas(Pacientes pacientes) {	
+	public void mostrar_citas(Pacientes pacientes) {
+	
+		Iterator<Citas> itr = citas.iterator();
+		System.out.println(
+				"Apellido\t\t" + "Nombre\t\t" + "Fecha de nacimiento\t" + "DNI\t\t" + "telefono\t" + "email\t\t\t"
+						+ "direccion\t\t\t\t\t" + "Seguridad social\t" + "archivo de citas\t" + "Ultima modificacion");
+		while (itr.hasNext()) {
+			Citas actual = itr.next();
+			System.out.println(actual);
+		}
 	}
 	public void add_cita(Citas citas, Pacientes pacientes) {
+		boolean exito = false;
+
+		int posicion = buscarPosicion_cita(citas.getFecha(), pacientes.getRegistro_citas());
+
+		if (posicion == -1) {
+			pacientes.getRegistro_citas().add(citas);
+			//Esto actualiza la ultima modificación a la fevha actual
+			pacientes.setModificacion_registro(new Date());
+			exito=true;
+		} else {
+			System.out.println("NO SE HA PODIDO AGREGAR CITA.\n La cita del paciente " + pacientes.getApellido() + " "
+					+ pacientes.getNombre() + " DNI:" + pacientes.getDni() + " con fecha " + citas.getFecha() + " "
+					+ "ya existe");
+		}
+	}
+	
+	//metodo para buscar la existencia de una cita y su posición en el array
+		//metodo para buscar la existencia de un paciente o doctor y su posición en el array
+		private int buscarPosicion_cita(Date fecha, ArrayList<Citas> datos) {
+			int posicion = -1; // -1 si no encuentro. X si aparece
+			int indice_arraylist = 0; // lo necesitamos para recorrer el array
+
+			while (posicion == -1 && indice_arraylist < datos.size()) {
+				if (datos.get(indice_arraylist).getFecha().compareTo(fecha)==0) {
+					// Lo encontró!
+					posicion = indice_arraylist;
+				}
+				indice_arraylist++;
+			}
+
+			return posicion;
+		}
+		
+	public  boolean delete_cita(Citas citas, Pacientes pacientes) {
+		boolean borrado = false;
+
+		Doctores doctores = null;
+		int posicion = buscarPosicion(pacientes.getDni(), doctores.getPacientes());
+
+		if (posicion == -1) {
+			System.out.println("NO SE HA PODIDO DAR DE BAJA. El paciente (" + pacientes.getApellido() + " "
+					+ pacientes.getNombre() + " DNI:" + pacientes.getDni() + ") NO estaba dado de alta");
+		} else {
+			Doctores hospital = null;
+			hospital.getPacientes().remove(posicion);
+			borrado = true;
+		}
+		return borrado;
+	}
+	private int buscarPosicion(String dni, ArrayList datos) {
+		int posicion = -1; // -1 si no encuentro. X si aparece
+		int indice_arraylist = 0; // lo necesitamos para recorrer el array
+
+		if (0 < datos.size() && datos.get(0) instanceof Pacientes) {
+			while (posicion == -1 && indice_arraylist < datos.size()) {
+				if (((ArrayList<Pacientes>) datos).get(indice_arraylist).getDni().equals(dni)) {
+					// Lo encontró!
+					posicion = indice_arraylist;
+				}
+				indice_arraylist++;
+			}
+		} else if (0 < datos.size() && datos.get(0) instanceof Doctores) {
+			while (posicion == -1 && indice_arraylist < datos.size()) {
+				if (((ArrayList<Doctores>) datos).get(indice_arraylist).getDni().equals(dni)) {
+					// Lo encontró!
+					posicion = indice_arraylist;
+				}
+				indice_arraylist++;
+			}
+		}
+
+		return posicion;
+	}
+	
+	
+	public boolean editar_cita(Citas citas,Pacientes pacientes,String busqueda,String filtro, Date fecha) {
+		//he cambiado el object por string y luego lo he cambiado donde lo necesitaba y en vez de campo he puesto filtro
+		boolean exito = false;
+		String campo_lc = filtro.toLowerCase();
+
+		int posicion = buscarPosicion_cita(fecha, pacientes.getRegistro_citas());
+
+		if (posicion == -1) {
+			System.out.println("ERROR AL EDITAR LA CITA.\n La cita del paciente " + pacientes.getApellido()
+			+ " " + pacientes.getNombre() + " DNI:" + pacientes.getDni() + " con fecha " + fecha + " "
+					+ ") NO fue encontrada");
+		} else {
+			if (campo_lc.equals("diagnostico")) {
+				pacientes.getRegistro_citas().get(posicion).setDiagnostico(busqueda);
+				exito = true;
+			}
+			else if (campo_lc.equals("medicamento")) {
+				pacientes.getRegistro_citas().get(posicion).setMedicamiento(busqueda);
+				exito = true;
+			}
+			/*else if (campo_lc.equals("cantidad")) {
+				pacientes.getRegistro_citas().get(posicion).setCantidad(new_dato);
+				exito = true;
+			}
+			else if (campo_lc.equals("frecuencia")) {
+				pacientes.getRegistro_citas().get(posicion).setFrecuencia(new_dato);
+				exito = true;
+			}*/
+			else {
+				System.out.println("ERROR AL EDITAR LA CITA.\n El campo " + filtro + "no es válido");
+			}
+			
+			if (exito) {
+				pacientes.setModificacion_registro(new Date());
+			}
+			
+		}
+		return exito;
 		
 	}
-	public void delete_cita(Citas citas, Pacientes pacientes) {
-		
-	}
-	public void editar_cita(Citas citas,Pacientes pacientes,Object busqueda,String filtro) {
-		
-	}
-	public Date mostrar_ult_modif() {
-		return null;
+		public String mostrar_ult_modif(Pacientes paciente) {
+		String ultima_mod = paciente.getModificacion_registro_str();
+			return ultima_mod;
 		
 	}
 	
@@ -207,16 +433,55 @@ public class Doctores {
 	}
 
 	public int stats_pacientes_total() {
+		
+		
+		
 		return 0;
 
 	}
 
-	public void stats_PacxHospital(int numeroH) {
-
+	public void stats_PacxHospital(Hospital hospital) {
+		ArrayList<Pacientes> hospitalTotal = hospital.getPacientes();
+		for(Doctores doctor: doctor) {
+			System.out.println("Doctor: "+doctor.getNombre()+" "+doctor.getApellido()+"\n");
+			ArrayList<Pacientes> pacientes = hospital.getPacientes();
+			for (Pacientes pac : pacientes) {
+				System.out.println("\tPaciente "+pac.getRegistro_citas()+" "+pac.getApellido());
+			}
+			System.out.println("\n");
+		}
+		
 	}
 
-	public void PacxArea(int numeroA) {
-
+	public void PacxArea(Hospital hospital) {
+		Map<String, List<Pacientes>> mapPacientesPorArea = new HashMap<String, List<Pacientes>>();
+		ArrayList<Doctores> doctores = hospital.getDoctores();
+		for(Doctores doctor: doctores) {
+			Area area = doctor.getArea();
+			if(area != null) {
+				String key = area.name();
+				List<Pacientes> lstPacientes = mapPacientesPorArea.get(key);
+				if(lstPacientes == null) {
+					lstPacientes = new ArrayList<Pacientes>();
+					mapPacientesPorArea.put(key, lstPacientes);
+				}
+				List<Pacientes> pacientesDoctor = doctor.getPacientes();
+				lstPacientes.addAll(pacientesDoctor);
+			}
+		}
+		
+		Set<String>  keySet = mapPacientesPorArea.keySet();
+		for(String nombreArea: keySet) {
+			System.out.println("Area: "+nombreArea);
+			List<Pacientes> pacientes = mapPacientesPorArea.get(nombreArea);
+			for(Pacientes pac: pacientes) {
+				System.out.println("\tPaciente "+pac.getRegistro_citas()+" "+pac.getApellido());
+			}
+			System.out.println("\n");
+		}
+		
+	
+		
 	}
 
 	// Metodos aux
