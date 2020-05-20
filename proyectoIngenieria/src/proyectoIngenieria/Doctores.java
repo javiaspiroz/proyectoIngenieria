@@ -442,6 +442,7 @@ public class Doctores {
 
 	public void stats_PacxHospital(Hospital hospital) {
 		ArrayList<Pacientes> hospitalTotal = hospital.getPacientes();
+		//aqui no sabria que poner 
 		for(Doctores doctor: doctor) {
 			System.out.println("Doctor: "+doctor.getNombre()+" "+doctor.getApellido()+"\n");
 			ArrayList<Pacientes> pacientes = hospital.getPacientes();
