@@ -1,7 +1,6 @@
 package proyectoIngenieria;
 
 import java.util.Date;
-import java.util.Iterator;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
