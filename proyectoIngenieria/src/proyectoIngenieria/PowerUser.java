@@ -372,6 +372,7 @@ public class PowerUser {
 	
 	// metodos extras
 	//metodo para buscar la existencia de un paciente o doctor y su posición en el array
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private int buscarPosicion(String dni, ArrayList datos) {
 		int posicion = -1; // -1 si no encuentro. X si aparece
 		int indice_arraylist = 0; // lo necesitamos para recorrer el array
