@@ -222,6 +222,7 @@ public class PowerUser {
 	}
 
 	public void stats_PacxArea() {
+		int contador=0;
 		Map<String, List<Pacientes>> mapPacientesPorArea = new HashMap<String, List<Pacientes>>();
 		ArrayList<Doctores> doctores = hospital.getDoctores();
 		for(Doctores doctor: doctores) {
@@ -243,9 +244,11 @@ public class PowerUser {
 			System.out.println("Area: "+nombreArea);
 			List<Pacientes> pacientes = mapPacientesPorArea.get(nombreArea);
 			for(Pacientes pac: pacientes) {
-				System.out.println("\tPaciente "+pac.getRegistro_citas()+" "+pac.getApellido());
+				System.out.println("\tPaciente " + pac.getNombre()+ " "+pac.getApellido() + " \n\tDNI: " + pac.getDni());
+				contador++;
 			}
-			System.out.println("\n");
+			System.out.println("Total de pacientes en " + nombreArea +": "+ contador + "\n");
+			contador=0;
 		}
 		/*
 		 * Doctor1 (a1)
@@ -277,14 +280,17 @@ public class PowerUser {
 	}
 	
 	public void stats_PacxDoc() {
+		int contador=0;
 		ArrayList<Doctores> doctores = hospital.getDoctores();
 		for(Doctores doctor: doctores) {
 			System.out.println("Doctor: "+doctor.getNombre()+" "+doctor.getApellido()+"\n");
 			ArrayList<Pacientes> pacientes = doctor.getPacientes();
 			for (Pacientes pac : pacientes) {
-				System.out.println("\tPaciente "+pac.getRegistro_citas()+" "+pac.getApellido());
+				System.out.println("\tPaciente "+ pac.getNombre()+ " "+pac.getApellido() + " \n\tDNI: " + pac.getDni());
+				contador++;
 			}
-			System.out.println("\n");
+			System.out.println("Total de pacientes: " + contador + "\n");
+			contador=0;
 		}
 		/*
 		 * Doctor1 (a1)
