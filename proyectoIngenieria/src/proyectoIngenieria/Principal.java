@@ -351,13 +351,19 @@ public class Principal {
 							System.out.println("Introduzca el DNI del doctor");
 							String dniAuxD = sc.next();
 							Doctores dborr = findDocInArr(hospital, dniAuxD);
-							poweruser.baja_doc(dborr);
+							if (dborr!=null)
+								poweruser.baja_doc(dborr);
+							else
+								System.out.println("No existe ningun doctor con ese DNI");
 							break;
 						case 10://dar baja paciente
 							System.out.println("Introduzca el DNI del paciente");
-							String dniAuxP = sc.next();
+							String dniAuxP = sc.next();							
 							Pacientes pborr = findPacInArr(hospital, dniAuxP);
-							poweruser.baja_pac(pborr);
+							if (pborr!=null)
+								poweruser.baja_pac(pborr);
+							else
+								System.out.println("No existe ningun paciente con ese DNI");
 							break;
 						case 11://asignar paciente a doctor
 							
