@@ -9,16 +9,12 @@ public class Citas {
 	private Date fecha ;
 	private String diagnostico ;
 	private String medicamientos ;
-	/*private String cantidad ; 
-	private String frecuencia ;*/
 	
 	//Constructor
 	public Citas(Date fecha, String diagnostico, String medicamientos) {
 		this.fecha = fecha;
 		this.diagnostico = diagnostico;
 		this.medicamientos = medicamientos;
-		/*this.cantidad = cantidad;
-		this.frecuencia = frecuencia;*/
 	}
 	
 	//Getters y Setters
