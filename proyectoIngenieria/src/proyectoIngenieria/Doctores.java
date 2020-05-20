@@ -318,6 +318,7 @@ public class Doctores {
 		return borrado;
 	}
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private int buscarPosicion(String dni, ArrayList datos) {
 		int posicion = -1; // -1 si no encuentro. X si aparece
 		int indice_arraylist = 0; // lo necesitamos para recorrer el array
