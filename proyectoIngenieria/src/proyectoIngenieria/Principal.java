@@ -17,6 +17,7 @@ public class Principal {
 	// Tenia esta funcion hecha para validar usuario y contraseña del examen del
 	// semestre pasado de programacion
 	public static Object validar_usuario(Hospital hospital, String tipo, int N) {
+		@SuppressWarnings("resource")
 		Scanner teclado = new Scanner(System.in);
 		String usuario = "";
 		String contrasena = "";
@@ -85,7 +86,8 @@ public class Principal {
 	 
 	 /*Para exportar un archivo de usuarios y contrasenas (tener uno para users y
 	 * otro para powerusers) al finalizar el programa (y solo por el, el poweruser no debe poder)*/
-	public static void exportar_contrasenas(ArrayList usuarios) {
+	@SuppressWarnings("unchecked")
+	public static void exportar_contrasenas(@SuppressWarnings("rawtypes") ArrayList usuarios) {
 		FileWriter fichero = null;
 
 		try {
@@ -128,6 +130,25 @@ public class Principal {
 		}
 	}
 	
+	public static Pacientes findPacInArr (Hospital hospital, String dniAux){
+		Pacientes p = null;
+		for (int i=0; i<hospital.getPacientes().size(); i++){
+			if (hospital.getPacientes().get(i).getDni().equals(dniAux)){
+				p = hospital.getPacientes().get(i);
+			}
+		}
+		return p;
+	}
+	
+	public static Doctores findDocInArr (Hospital hospital, String dniAux){
+		Doctores d = null;
+		for (int i=0; i<hospital.getDoctores().size(); i++){
+			if (hospital.getDoctores().get(i).getDni().equals(dniAux)){
+				d = hospital.getDoctores().get(i);
+			}
+		}
+		return d;
+	}
 
 	public static void main(String[] args) {
 		//declaramos la entrada de teclado
@@ -166,6 +187,10 @@ public class Principal {
 		//Prueba de enviar correo
 		//hospital.getDoctores().get(0).enviarMail(hospital.getPacientes().get(0));
 		
+		//Pruebas stats
+		//hospital.getPowerUser().get(0).add_pac(hospital.getPacientes().get(0), hospital.getDoctores().get(0));
+		//hospital.getPowerUser().get(0).stats_PacxArea();
+		//hospital.getPowerUser().get(0).stats_PacxDoc();;
 		
 		//Empezamos a desarrollar el menu
 		int decision=0;
@@ -306,7 +331,7 @@ public class Principal {
 							System.out.println("Introduzca el telefono");
 							while (!sc.hasNextInt()) {
 								System.out.print("ERROR. \nIntroduzca un numero (entero) por favor:");
-								sc.nextInt();	
+								sc.next();
 							}
 							int tel2=sc.nextInt();
 							System.out.println("Introduzca el e-mail");
@@ -316,7 +341,7 @@ public class Principal {
 							System.out.println("Introduzca el numero de seguridad social");
 							while (!sc.hasNextLong()) {
 								System.out.print("ERROR. \nIntroduzca un numero (entero) por favor:");
-								sc.nextLong();	
+								sc.next();	
 							}
 							long nss = sc.nextLong();	
 							Pacientes auxP = new Pacientes (apellido2,nombre2,fecha2,dni2,tel2,mail2,dir2,nss);
@@ -324,24 +349,14 @@ public class Principal {
 							break;	
 						case 9://dar baja doctor
 							System.out.println("Introduzca el DNI del doctor");
-							String dniAUX = sc.next();
-							Doctores dborr = null;
-							for (int i=0; i<hospital.getDoctores().size(); i++){
-								if (hospital.getDoctores().get(i).getDni()==dniAUX){
-									dborr = hospital.getDoctores().get(i);
-								}
-							}
+							String dniAuxD = sc.next();
+							Doctores dborr = findDocInArr(hospital, dniAuxD);
 							poweruser.baja_doc(dborr);
 							break;
 						case 10://dar baja paciente
-							System.out.println("Introduzca el DNI del doctor");
-							String dniAux = sc.next();
-							Pacientes pborr = null;
-							for (int i=0; i<hospital.getPacientes().size(); i++){
-								if (hospital.getPacientes().get(i).getDni()==dniAux){
-									pborr = hospital.getPacientes().get(i);
-								}
-							}
+							System.out.println("Introduzca el DNI del paciente");
+							String dniAuxP = sc.next();
+							Pacientes pborr = findPacInArr(hospital, dniAuxP);
 							poweruser.baja_pac(pborr);
 							break;
 						case 11://asignar paciente a doctor
@@ -367,7 +382,7 @@ public class Principal {
 						case 17://pacientes por doctor
 							poweruser.stats_PacxDoc();
 							break;
-						case 18://a�adir cita
+						case 18://anadir cita
 							
 							
 							
@@ -385,7 +400,7 @@ public class Principal {
 						
 					}
 				
-					break;				
+					break;	
 				case 2:
 					//doc: login con 3 intentos maximo
 					Doctores user=(Doctores) validar_usuario(hospital, "doc", 3);
@@ -404,7 +419,7 @@ public class Principal {
 						
 						switch(decision){
 						case 1:
-							
+							user.mostrar_pac();
 							break;
 						case 2:
 							
