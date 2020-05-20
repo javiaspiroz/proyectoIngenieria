@@ -313,33 +313,35 @@ public class PowerUser {
 		boolean exito = false;
 		String campo_lc = campo.toLowerCase();
 
-		int posicion = buscarPosicion_cita(fecha, pacientes.getRegistro_citas());
+		int posicionpaciente = buscarPosicion(pacientes.getDni(), hospital.getPacientes());
 
-		if (posicion == -1) {
-			System.out.println("ERROR AL EDITAR LA CITA.\n La cita del paciente " + pacientes.getApellido()
-			+ " " + pacientes.getNombre() + " DNI:" + pacientes.getDni() + " con fecha " + fecha + " "
-					+ ") NO fue encontrada");
+
+		if (posicionpaciente == -1) {
+			System.out.println("NO SE HA PODIDO ENCONTRAR PACIENTE. El paciente (" + pacientes.getApellido() + " "
+					+ pacientes.getNombre() + " DNI:" + pacientes.getDni() + ") NO existe.");
+			
+			
 		} else {
-			if (campo_lc.equals("diagnostico")) {
-				pacientes.getRegistro_citas().get(posicion).setDiagnostico(new_dato);
-				exito = true;
-			}
-			else if (campo_lc.equals("medicamento")) {
-				pacientes.getRegistro_citas().get(posicion).setMedicamiento(new_dato);
-				exito = true;
-			}
-			/*else if (campo_lc.equals("cantidad")) {
-				pacientes.getRegistro_citas().get(posicion).setCantidad(new_dato);
-				exito = true;
-			}
-			else if (campo_lc.equals("frecuencia")) {
-				pacientes.getRegistro_citas().get(posicion).setFrecuencia(new_dato);
-				exito = true;
-			}*/
-			else {
-				System.out.println("ERROR AL EDITAR LA CITA.\n El campo " + campo + "no es válido");
+			int posicion = buscarPosicion_cita(fecha, pacientes.getRegistro_citas());
+			if (posicion==-1) {
+				System.out.println("ERROR AL EDITAR LA CITA.\n La cita del paciente " + pacientes.getApellido()
+				+ " " + pacientes.getNombre() + " DNI:" + pacientes.getDni() + " con fecha " + fecha + " "
+						+ ") NO fue encontrada");
+			}else {
+				if (campo_lc.equals("diagnostico")) {
+					pacientes.getRegistro_citas().get(posicion).setDiagnostico(new_dato);
+					exito = true;
+				}
+				else if (campo_lc.equals("medicamento")) {
+					pacientes.getRegistro_citas().get(posicion).setMedicamiento(new_dato);
+					exito = true;
+				}
+				else {
+					System.out.println("ERROR AL EDITAR LA CITA.\n El campo " + campo + "no es válido");
+				}
 			}
 			
+
 			if (exito) {
 				pacientes.setModificacion_registro(new Date());
 			}

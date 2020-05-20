@@ -45,18 +45,12 @@ public class Citas {
 	public void setMedicamiento(String medicamiento) {
 		this.medicamientos = medicamiento;
 	}
-	/*public String getCantidad() {
-		return cantidad;
+	
+	@Override
+	public String toString() {
+		
+		return getFecha_str() + "\t" + diagnostico +"\t" + medicamientos;
 	}
-	public void setCantidad(String cantidad) {
-		this.cantidad = cantidad;
-	}
-	public String getFrecuencia() {
-		return frecuencia;
-	}
-	public void setFrecuencia(String frecuencia) {
-		this.frecuencia = frecuencia;
-	}*/
 	
 	
 }
