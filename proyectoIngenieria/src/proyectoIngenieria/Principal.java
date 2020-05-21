@@ -235,18 +235,121 @@ public class Principal {
 						
 						switch(decision){
 						case 1://buscar pacientes
-							System.out.println("�Porque criterio desea buscar?");
-							String filtroP = sc.next();
+							System.out.println("Porque criterio desea buscar?");
+							System.out.println(
+									"1. Nombre\n 2. Apellido\n 3. DNI\n 4. Email\n 5. Direccion\n 6. Fecha de nacimiento(dd/mm/aa)\n"
+										+ " 7. Telefono\n 8. Seguridad social\n");
+							int filtro=0;
+							while (!sc.hasNextInt()) {
+								System.out.print("ERROR. \nIntroduzca un numero (entero) por favor:");
+								sc.next();	
+							}
+							filtro=sc.nextInt();
+							String filtroP = "";
+							switch(filtro) {
+							case 1:
+								filtroP = "nombre";
+								break;
+							case 2:
+								filtroP ="apellido";
+								break;
+							case 3:
+								filtroP="dni";
+								break;
+							case 4:
+								filtroP ="email";
+								break;
+							case 5:
+								filtroP ="direccion";
+								break;
+							case 6:
+								filtroP="fecha de nacimiento";
+								break;
+							case 7:
+								filtroP ="telefono";
+								break;
+							case 8:
+								filtroP ="seguridad social";
+								break;
+							}
 							System.out.println("Introduzca el termino a buscar");
-							Object busquedaP = sc.next();
-							hospital.filtrar_pacientes(filtroP, busquedaP);
+							
+							if(filtroP.equals("telefono")) {
+								int searchP = 0;
+								while (!sc.hasNextInt()) {
+									System.out.print("ERROR. \nIntroduzca un numero (entero) por favor:");
+									sc.next();	
+								}
+								searchP = sc.nextInt();
+								hospital.filtrar_pacientes(filtroP, searchP);
+							} else if (filtroP.equals("seguridad social")) {
+								long searchP = 0;
+								while (!sc.hasNextLong()) {
+									System.out.print("ERROR. \nIntroduzca un numero (entero) por favor:");
+									sc.next();	
+								}
+								searchP = sc.nextLong();
+								hospital.filtrar_pacientes(filtroP, searchP);
+							} else {
+								String searchP = sc.next();
+								hospital.filtrar_pacientes(filtroP, searchP);
+							}
+							
 							break;
 						case 2://buscar doctores
-							System.out.println("�Porque criterio desea buscar?");
-							String filtroD = sc.next();
+							System.out.println("Porque criterio desea buscar?");
+							System.out.println(
+									"1. Nombre\n 2. Apellido\n 3. DNI\n 4. Email\n 5. Direccion\n 6. Fecha de nacimiento\n"
+										+ " 7. Telefono\n 8. Area\n");
+							filtro=0;
+							while (!sc.hasNextInt()) {
+								System.out.print("ERROR. \nIntroduzca un numero (entero) por favor:");
+								sc.next();	
+							}
+							filtro=sc.nextInt();
+							String filtroD = "";
+							switch(filtro) {
+							case 1:
+								filtroD = "nombre";
+								break;
+							case 2:
+								filtroD ="apellido";
+								break;
+							case 3:
+								filtroD="dni";
+								break;
+							case 4:
+								filtroD ="email";
+								break;
+							case 5:
+								filtroD ="direccion";
+								break;
+							case 6:
+								filtroD="fecha de nacimiento";
+								break;
+							case 7:
+								filtroD ="telefono";
+								break;
+							case 8:
+								filtroD ="area";
+								break;
+							}
 							System.out.println("Introduzca el termino a buscar");
-							Object busquedaD = sc.next();
-							hospital.filtrar_doctores(filtroD, busquedaD);
+							
+							if(filtroD.equals("telefono")) {
+								int searchD = 0;
+								while (!sc.hasNextInt()) {
+									System.out.print("ERROR. \nIntroduzca un numero (entero) por favor:");
+									sc.next();	
+								}
+								searchD = sc.nextInt();
+								hospital.filtrar_doctores(filtroD, searchD);
+							} else {
+								String searchD = sc.next();
+								hospital.filtrar_doctores(filtroD, searchD);
+							}
+							
+	
 							break;
 						case 3://importar csv
 							hospital.importar_csv_doctores();
