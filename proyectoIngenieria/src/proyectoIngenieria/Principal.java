@@ -244,18 +244,8 @@ public class Principal {
 				case 1:
 					//admin: login con 3 intentos maximo
 					PowerUser poweruser=(PowerUser)validar_usuario(hospital, "admin", 3);
-					System.out.println("Bienvenido " + poweruser.getNombre() + " " + poweruser.getApellido());
-					
-					//puede que no se use este bloque y pueda borrar
-					//ahora localizamos la posicion del poweruser dentro del arraylist
-					int position=-1;
-					for (int i=0; i<hospital.getPowerUser().size(); i++){
-						if (hospital.getPowerUser().get(i).getDni()==poweruser.getDni()){
-							position=i;//guardamos la posicion del poweruser
-						}
-					}
-					System.out.println("Posicion en el arraylist de powerusers "+position);//borrar print en version final
-					
+					System.out.println("Bienvenido " + poweruser.getNombre() + " " + poweruser.getApellido());					
+							
 					while(decision!=20 && poweruser!=null) {
 						System.out.println("\nï¿½Que desea hacer?\n 1. Buscar pacientes\n 2. Buscar doctores\n 3. Importar CSV\n "
 								+ "4. Exportar CSV\n 5. Mostrar doctores\n 6. Mostrar pacientes\n 7. Dar de alta a un doctor\n "
@@ -520,11 +510,22 @@ public class Principal {
 					//doc: login con 3 intentos maximo
 					Doctores user=(Doctores) validar_usuario(hospital, "doc", 3);
 					System.out.println("Bienvenido " + user.getNombre() + " " + user.getApellido());
-					while(decision!=10 && user!=null) {
+					
+					//puede que no se use este bloque y pueda borrar
+					//ahora localizamos la posicion del poweruser dentro del arraylist
+					int position=-1;
+					for (int i=0; i<hospital.getDoctores().size(); i++){
+						if (hospital.getDoctores().get(i).getDni()==user.getDni()){
+							position=i;//guardamos la posicion del poweruser
+						}
+					}
+					System.out.println("Posicion en el arraylist de powerusers "+position);//borrar print en version final
+
+					while(decision!=11 && user!=null) {
 						
 						System.out.println("\nï¿½Que desea hacer?\n 1. Mostrar pacientes\n 2. Buscar pacientes\n 3. Mostrar citas\n"
-								+ " 4. Eliminar cita\n 5. Ultima modificacion del historial de citas\n 6. Enviar mail\n 7. "
-								+ "Pacientes totales\n 8. Pacientes por Hospital\n 9. Pacientes por area\n 10. Volver\n");
+								+ " 4. Eliminar cita\n 5. Editar cita\n 6. Ultima modificacion del historial de citas\n 7. Enviar mail\n 8. "
+								+ "Pacientes totales\n 9. Pacientes por Hospital\n 10. Pacientes por area\n 11. Volver\n");
 						
 						while (!sc.hasNextInt()) {
 							System.out.print("ERROR. \nIntroduzca un numero (entero) por favor:");
@@ -537,30 +538,109 @@ public class Principal {
 							user.mostrar_pac();
 							break;
 						case 2://buscar pacientes
-							
+							System.out.println("¿Porque criterio desea buscar?");
+							String filtroD = sc.next();
+							System.out.println("Introduzca el termino a buscar");
+							Object busquedaD = sc.next();
+							hospital.getDoctores().get(position).buscar_paciente(busquedaD, filtroD);
 							break;
 						case 3://mostrar citas
-								
-								break;
+							//obtenemos posicion del paciente
+							System.out.println("Introduzca el DNI del paciente");
+							String dnip1 = sc.next();
+							Pacientes pd1 = findPacInArr(hospital, dnip1);
+							if (pd1!=null){
+								int posp1 = posPacArr(hospital, dnip1);
+								hospital.getDoctores().get(position).mostrar_citas(
+										hospital.getPacientes().get(posp1));
+							}
+							else
+								System.out.println("No existe ningun paciente con ese DNI");
+							break;
 						case 4://eliminar cita
-							
+							System.out.println("Introduzca el DNI del paciente");
+							String dnic1 = sc.next();
+							Pacientes pc1 = findPacInArr(hospital, dnic1);
+							if (pc1!=null){
+								int posdc1 = posPacArr(hospital, dnic1);
+								
+								System.out.println("Introduzca la fecha de la cita");
+								String dsce = sc.next();
+								Date dce = null;
+								try {
+									DateFormat sourceFormat = new SimpleDateFormat("dd/MM/yyyy");
+									dce = sourceFormat.parse(dsce);
+								} catch (ParseException | java.text.ParseException e) {
+									System.out.print("Mal formato de fecha.");
+								}
+								
+								int posc = buscarPosCita(hospital.getPacientes().get(posdc1).getRegistro_citas(), dce);
+								Citas doctorCitaDelete = hospital.getPacientes().get(posdc1).getRegistro_citas().get(posc);
+								hospital.getDoctores().get(position).delete_cita(doctorCitaDelete, hospital.getPacientes().get(posdc1));
+							}
+							else
+								System.out.println("No existe ningun paciente con ese DNI");
 							break;
-						case 5://ultima mod historial citas
-	
+						case 5://editar cita
+							System.out.println("Introduzca el DNI del paciente");
+							String dniece = sc.next();
+							Pacientes pedit = findPacInArr(hospital, dniece);
+							if (pedit!=null){
+								System.out.println("Introduzca la fecha de la cita");
+								String dscedit = sc.next();
+								Date dcedit = null;
+								try {
+									DateFormat sourceFormat = new SimpleDateFormat("dd/MM/yyyy");
+									dcedit = sourceFormat.parse(dscedit);
+								} catch (ParseException | java.text.ParseException e) {
+									System.out.print("Mal formato de fecha.");
+								}
+								System.out.println("introduzca el campo a editar medicamento o diagnostico");
+								String fieldChange2 = sc.next();
+								System.out.println("Introduzca los nuevos datos");
+								String newData2 = sc.next();
+								int posc2 = posPacArr(hospital, dniece);
+								user.editar_cita(dcedit, hospital.getPacientes().get(posc2), newData2, fieldChange2);
+							}
+							else{
+								System.out.println("No existe ningun paciente con ese DNI");
+							}
 							break;
-						case 6://enviar mail
-							
+						case 6://ultima mod historial citas
+							System.out.println("Introduzca el DNI del paciente");
+							String dnip2 = sc.next();
+							Pacientes pd2 = findPacInArr(hospital, dnip2);
+							if (pd2!=null){
+								int posp2 = posPacArr(hospital, dnip2);
+								String s = hospital.getDoctores().get(position).mostrar_ult_modif(hospital.getPacientes().get(posp2));
+								System.out.println("La ultima modificacion del historial de citas fue +");
+								System.out.print(s+'\n');//lo pongo asi porque salia error
+							}
+							else
+								System.out.println("No existe ningun paciente con ese DNI");
 							break;
-						case 7://pacientes totales
-							
+						case 7://enviar mail
+							System.out.println("Introduzca el DNI del paciente");
+							String dnip3 = sc.next();
+							Pacientes pd3 = findPacInArr(hospital, dnip3);
+							if (pd3!=null){
+								int posp3 = posPacArr(hospital, dnip3);
+								hospital.getDoctores().get(position).enviarMail(hospital.getPacientes().get(posp3));
+							}
+							else
+								System.out.println("No existe ningun paciente con ese DNI");
 							break;	
-						case 8://pacientes por hospital
-							
+						case 8://pacientes totales
+							System.out.println("El numero de pacientes totales del doctor es "+
+									hospital.getDoctores().get(position).stats_pacientes_total());
 							break;	
-						case 9://pacientes por area
-							
+						case 9://pacientes por hospital
+							hospital.getDoctores().get(position).stats_PacxHospital(hospital);
 							break;
-						case 10:
+						case 10://pacientes por area
+							hospital.getDoctores().get(position).PacxArea(hospital);
+							break;
+						case 11:
 							System.out.println("Volver a elegir tipo de usuario");
 							break;	
 						default:
