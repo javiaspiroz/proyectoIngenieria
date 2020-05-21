@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.Scanner;
 
+import com.sun.org.apache.bcel.internal.generic.RETURN;
 import com.sun.org.apache.xerces.internal.impl.xpath.regex.ParseException;
 
 import proyectoIngenieria.Doctores.Area;
@@ -149,6 +150,41 @@ public class Principal {
 		}
 		return d;
 	}
+	
+	public static int posDocArr (Hospital hospital, String dniAux){
+		int position=-1;
+		for (int i=0; i<hospital.getDoctores().size(); i++){
+			if (hospital.getDoctores().get(i).getDni().equals(dniAux)){
+				position=i;//guardamos la posicion del poweruser
+			}
+		}
+		return position;
+	}
+	
+	public static int posPacArr (Hospital hospital, String dniAux){
+		int position=-1;
+		for (int i=0; i<hospital.getPacientes().size(); i++){
+			if (hospital.getPacientes().get(i).getDni().equals(dniAux)){
+				position=i;//guardamos la posicion del poweruser
+			}
+		}
+		return position;
+	}
+	
+	public static int buscarPosCita (ArrayList<Citas> cs, Date d){
+		int posicion = -1; // -1 si no encuentro. X si aparece
+		int indice_arraylist = 0; // lo necesitamos para recorrer el array
+
+		while (posicion == -1 && indice_arraylist < cs.size()) {
+			if (cs.get(indice_arraylist).getFecha().compareTo(d)==0) {
+				//encontrado
+				posicion = indice_arraylist;
+			}
+			indice_arraylist++;
+		}
+
+		return posicion;
+	}
 
 	public static void main(String[] args) {
 		//declaramos la entrada de teclado
@@ -210,6 +246,7 @@ public class Principal {
 					PowerUser poweruser=(PowerUser)validar_usuario(hospital, "admin", 3);
 					System.out.println("Bienvenido " + poweruser.getNombre() + " " + poweruser.getApellido());
 					
+					//puede que no se use este bloque y pueda borrar
 					//ahora localizamos la posicion del poweruser dentro del arraylist
 					int position=-1;
 					for (int i=0; i<hospital.getPowerUser().size(); i++){
@@ -384,7 +421,7 @@ public class Principal {
 							String nombre = sc.next();
 							System.out.println("Introduzca el apellido");
 							String apellido = sc.next();
-							System.out.println("Introduzca el fecha de nacimiento");
+							System.out.println("Introduzca la fecha de nacimiento");
 							String fechastr = sc.next();
 							Date fecha = null;
 							try {
@@ -419,7 +456,7 @@ public class Principal {
 							String nombre2 = sc.next();
 							System.out.println("Introduzca el apellido");
 							String apellido2 = sc.next();
-							System.out.println("Introduzca el fecha de nacimiento");
+							System.out.println("Introduzca la fecha de nacimiento");
 							String fechastr2 = sc.next();
 							Date fecha2 = null;
 							
@@ -469,10 +506,28 @@ public class Principal {
 								System.out.println("No existe ningun paciente con ese DNI");
 							break;
 						case 11://asignar paciente a doctor
-							
+							System.out.println("Introduzca el DNI del paciente");
+							String dniAuxP1 = sc.next();							
+							Pacientes p1 = findPacInArr(hospital, dniAuxP1);
+							System.out.println("Introduzca el DNI del doctor");
+							String dniAuxD1 = sc.next();
+							Doctores d1 = findDocInArr(hospital, dniAuxD1);
+							if (p1!=null && d1!=null)
+								poweruser.add_pac(p1, d1);
+							else
+								System.out.println("No se pudo completar la operación, revise los DNIs");
 							break;
 						case 12://quitar paciente de doctor
-							
+							System.out.println("Introduzca el DNI del paciente");
+							String dniAuxP2 = sc.next();							
+							Pacientes p2 = findPacInArr(hospital, dniAuxP2);
+							System.out.println("Introduzca el DNI del doctor");
+							String dniAuxD2 = sc.next();
+							Doctores d2 = findDocInArr(hospital, dniAuxD2);
+							if (p2!=null && d2!=null)
+								poweruser.delete_pac(p2, d2);
+							else
+								System.out.println("No se pudo completar la operación, revise los DNIs");
 							break;
 						case 13://cambiar contrasena
 							System.out.println("Introduzca su nueva contrasena");
@@ -480,7 +535,18 @@ public class Principal {
 							poweruser.setContrasenia(pwPU);
 							break;
 						case 14://cambiar contrasena a doctor
-							
+							System.out.println("Introduzca el DNI del doctor");
+							String dni1 = sc.next();
+							Doctores d3 = findDocInArr(hospital, dni1);
+							if (d3!=null){
+								System.out.println("Introduzca la nueva contraseña del doctor");
+								String newPassDoc = sc.next();
+								int posDoc = posDocArr(hospital, dni1);
+								hospital.getDoctores().get(posDoc).setContrasena(newPassDoc);		
+							}
+							else{
+								System.out.println("No existe ningun doctor con ese DNI");
+							}
 							break;
 						case 15://total pacientes
 							System.out.println("El numero total de pacientes del hospital es "+poweruser.stats_TotalPac());
@@ -492,12 +558,55 @@ public class Principal {
 							poweruser.stats_PacxDoc();
 							break;
 						case 18://anadir cita
-							
-							
-							
+							System.out.println("Introduzca el DNI del paciente");
+							String dnic1 = sc.next();
+							Pacientes p3 = findPacInArr(hospital, dnic1);
+							if (p3!=null){
+								int posPac = posPacArr(hospital, dnic1);
+								System.out.println("Introduzca el tratamiento del paciente");
+								String medc1 = sc.next();
+								System.out.println("Introduzca el diagnostico del paciente");
+								String diagc1 = sc.next();
+								System.out.println("Introduzca la fecha de la cita");
+								String dsc1 = sc.next();
+								Date dc1 = null;
+								try {
+									DateFormat sourceFormat = new SimpleDateFormat("dd/MM/yyyy");
+									dc1 = sourceFormat.parse(dsc1);
+								} catch (ParseException | java.text.ParseException e) {
+									System.out.print("Mal formato de fecha.");
+								}
+								Citas c1 = new Citas (dc1, diagc1, medc1);
+								poweruser.add_cita(c1, hospital.getPacientes().get(posPac));
+							}
+							else{
+								System.out.println("No existe ningun paciente con ese DNI");
+							}							
 							break;
 						case 19://editar cita
-							
+							System.out.println("Introduzca el DNI del paciente");
+							String dnic2 = sc.next();
+							Pacientes p4 = findPacInArr(hospital, dnic2);
+							if (p4!=null){
+								System.out.println("Introduzca la fecha de la cita");
+								String dsc2 = sc.next();
+								Date dc2 = null;
+								try {
+									DateFormat sourceFormat = new SimpleDateFormat("dd/MM/yyyy");
+									dc2 = sourceFormat.parse(dsc2);
+								} catch (ParseException | java.text.ParseException e) {
+									System.out.print("Mal formato de fecha.");
+								}
+								System.out.println("introduzca el campo a editar medicamento o diagnostico");
+								String fieldChange = sc.next();
+								System.out.println("Introduzca los nuevos datos");
+								String newData = sc.next();
+								int posc2 = posPacArr(hospital, dnic2);
+								poweruser.editar_cita(dc2, hospital.getPacientes().get(posc2), fieldChange, newData);
+							}
+							else{
+								System.out.println("No existe ningun paciente con ese DNI");
+							}	
 							break;
 						case 20:
 							System.out.println("Volver a elegir tipo de usuario");
@@ -527,31 +636,31 @@ public class Principal {
 						decision=sc.nextInt();
 						
 						switch(decision){
-						case 1:
+						case 1://mostrar pacientes
 							user.mostrar_pac();
 							break;
-						case 2:
+						case 2://buscar pacientes
 							
 							break;
-						case 3:
+						case 3://mostrar citas
 								
 								break;
-						case 4:
+						case 4://eliminar cita
 							
 							break;
-						case 5:
+						case 5://ultima mod historial citas
 	
 							break;
-						case 6:
+						case 6://enviar mail
 							
 							break;
-						case 7:
+						case 7://pacientes totales
 							
 							break;	
-						case 8:
+						case 8://pacientes por hospital
 							
 							break;	
-						case 9:
+						case 9://pacientes por area
 							
 							break;
 						case 10:
