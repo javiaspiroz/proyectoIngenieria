@@ -615,7 +615,6 @@ public class Principal {
 					Doctores user=(Doctores) validar_usuario(hospital, "doc", 3);
 					System.out.println("Bienvenido " + user.getNombre() + " " + user.getApellido());
 					
-					//puede que no se use este bloque y pueda borrar
 					//ahora localizamos la posicion del poweruser dentro del arraylist
 					int position=-1;
 					for (int i=0; i<hospital.getDoctores().size(); i++){
