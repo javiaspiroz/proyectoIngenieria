@@ -307,10 +307,10 @@ public class Hospital {
 						System.out.println(actual);
 					}
 				}
-			} else if (filtro.equals("apellido")) {
+			} else if (filtro.contains("apellido")) {
 				while (itr.hasNext()) {
 					actual = itr.next();
-					if (actual.getApellido().equals(search)) {
+					if (actual.getApellido().toLowerCase().contains(search.toLowerCase())) {
 						System.out.println(actual);
 					}
 				}
@@ -347,7 +347,14 @@ public class Hospital {
 					}
 				}
 
-			} else {
+			} else if (filtro.equals("area")) {
+				while (itr.hasNext()) {
+					actual = itr.next();
+					if (actual.getArea().name().equalsIgnoreCase(search)) {
+						System.out.println(actual);
+					}
+				}
+			}else {
 				System.out.println("No hubo resultados");
 			}
 
@@ -364,21 +371,7 @@ public class Hospital {
 				System.out.println("No hubo resultados");
 			}
 
-		} else if (busqueda instanceof Area) {
-			Area search = (Area) busqueda;
-			if (filtro.equals("area")) {
-
-				while (itr.hasNext()) {
-					actual = itr.next();
-					if (actual.getArea() == search) {
-						System.out.println(actual);
-					}
-				}
-			} else {
-				System.out.println("No hubo resultados");
-			}
-
-		}
+		} 
 	}
 
 	// Este es para buscar pacientes segun un filtro
@@ -392,7 +385,6 @@ public class Hospital {
 						+ "direccion\t\t\t\t\t" + "Seguridad social\t" + "archivo de citas\t" + "Ultima modificacion");
 		// if (!itr.hasNext()) throw new NoSuchElementException();
 
-		while (itr.hasNext()) {
 			if (busqueda instanceof String) {
 				String search = (String) busqueda;
 				if (filtro.equals("nombre")) {
@@ -405,7 +397,7 @@ public class Hospital {
 				} else if (filtro.equals("apellido")) {
 					while (itr.hasNext()) {
 						actual = itr.next();
-						if (actual.getApellido().equals(search)) {
+						if (actual.getApellido().toLowerCase().contains(search.toLowerCase())) {
 							System.out.println(actual);
 						}
 					}
@@ -471,7 +463,6 @@ public class Hospital {
 				} else {
 					System.out.println("No hubo resultados");
 				}
-			}
 
 		}
 	}

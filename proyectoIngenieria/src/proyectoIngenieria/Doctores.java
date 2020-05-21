@@ -155,7 +155,7 @@ public class Doctores {
 						+ "direccion\t\t\t\t\t" + "Seguridad social\t" + "archivo de citas\t" + "Ultima modificacion");
 		// if (!itr.hasNext()) throw new NoSuchElementException();
 
-		while (itr.hasNext()) {
+		
 			if (busqueda instanceof String) {
 				String search = (String) busqueda;
 				if (filtro.equals("nombre")) {
@@ -168,7 +168,7 @@ public class Doctores {
 				} else if (filtro.equals("apellido")) {
 					while (itr.hasNext()) {
 						actual = itr.next();
-						if (actual.getApellido().equals(search)) {
+						if (actual.getApellido().toLowerCase().contains(search.toLowerCase())) {
 							System.out.println(actual);
 						}
 					}
@@ -236,7 +236,7 @@ public class Doctores {
 				}
 			}
 
-		}
+		
 		return actual;
 	}
 	
