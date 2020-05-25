@@ -622,7 +622,6 @@ public class Principal {
 							position=i;//guardamos la posicion del poweruser
 						}
 					}
-					System.out.println("Posicion en el arraylist de powerusers "+position);//borrar print en version final
 
 					while(decision!=11 && user!=null) {
 						
@@ -716,8 +715,7 @@ public class Principal {
 							if (pd2!=null){
 								int posp2 = posPacArr(hospital, dnip2);
 								String s = hospital.getDoctores().get(position).mostrar_ult_modif(hospital.getPacientes().get(posp2));
-								System.out.println("La ultima modificacion del historial de citas fue +");
-								System.out.print(s+'\n');//lo pongo asi porque salia error
+								System.out.println("La ultima modificacion del historial de citas fue "+s);
 							}
 							else
 								System.out.println("No existe ningun paciente con ese DNI");

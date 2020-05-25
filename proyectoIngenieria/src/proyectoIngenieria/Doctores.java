@@ -488,10 +488,13 @@ public class Doctores {
 
 		// Saco el porcentaje basado en cuantos hay en el area del doctor y cuantos
 		// tiene el doctor
-		int porcentaje = (this.pacientes.size() * 100) / lstPacientes.size();
+		
+		int porcentaje=0;
+		if (lstPacientes.size()!=0)
+			porcentaje = (this.pacientes.size() * 100) / lstPacientes.size();
 
 		System.out.println("El Dr. " + nombre + " " + apellido + "tiene asignados " + this.pacientes.size()
-				+ " pacientes" + "del area de + " + area.name() + ". " + "\nLo que corresponde al " + porcentaje
+				+ " pacientes del area de " + area.name() + ". " + "\nLo que corresponde al " + porcentaje
 				+ "% de pacientes del area");
 
 	}
