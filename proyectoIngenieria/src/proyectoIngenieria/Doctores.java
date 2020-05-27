@@ -32,7 +32,6 @@ public class Doctores {
 	private String direccion ;
 	private String contrasenia ;
 	private ArrayList<Pacientes> pacientes;
-	private ArrayList<Citas> citas;
 	
 	//Constructor1
 	public Doctores(String apellido,String nombre, Date fecha_nacimiento, Area area, String dni, int telefono,
@@ -241,14 +240,18 @@ public class Doctores {
 	}
 	
 	public void mostrar_citas(Pacientes pacientes) {
-	
-		Iterator<Citas> itr = citas.iterator();
-		System.out.println(
-				"Fecha\tDiagnostico\t\t\tMedicamentos" );
-		while (itr.hasNext()) {
-			Citas actual = itr.next();
-			System.out.println(actual);
+		
+		if (pacientes.getRegistro_citas().size()>0){
+			Iterator<Citas> itr = pacientes.getRegistro_citas().iterator();
+			System.out.println(
+					"Fecha\tDiagnostico\t\t\tMedicamentos" );
+			while (itr.hasNext()) {
+				Citas actual = itr.next();
+				System.out.println(actual);
+			}
 		}
+		else
+			System.out.println("El paciente no tiene citas programadas");
 	}
 	
 	public boolean add_cita(Citas citas, Pacientes pacientes) {
@@ -416,10 +419,11 @@ public class Doctores {
 
 		try {
 			Transport.send(mensaje);
+			System.out.println("Email enviado");
 		} catch (MessagingException e) {
 			System.out.println("Ocurrió un error: No se pudo enviar el correo. ");
 		}
-		System.out.println("Email enviado");
+		
 
 	}
 

@@ -190,43 +190,7 @@ public class Principal {
 		//declaramos la entrada de teclado
 		Scanner sc= new Scanner (System.in);
 		
-		//System.out.println("\nPrueba de datos");
 		Hospital hospital = new Hospital ("pacientes.csv");
-
-		//Prueba de metodos que impresion de info
-		//hospital.mostrar_pac();
-		//hospital.mostrar_doc();
-
-		//Prueba de exportacion de archivos luego de modificarlos
-		//Creo una cita
-		/*Citas citas = new Citas (new Date(), "Corona", "medicina", "mucha", "todos los dias");
-		//Agrego cita a un paciente
-		hospital.getPowerUser().get(0).add_cita(citas, hospital.getPacientes().get(4));
-		//Agrego el paciente a un doctor
-		hospital.getPowerUser().get(0).add_pac(hospital.getPacientes().get(2), hospital.getDoctores().get(3));
-		//Exporto el .csv de todos los doctores, que a su vez exporta el .csv de sus pacientes y de sus citas
-		hospital.exportar_csv("docs.csv", 'D');
-		//Exportar el .csv de todos los pacientes
-		hospital.exportar_csv("pc.csv", 'P');
-		System.out.println();*/
-		
-		//Prueba Exportar doc de 'D' (Doctores) (Cada uno con su respectivo archivo de pacientes
-		/*hospital.exportar_csv("docs.csv", 'D');*/
-		
-		//Prueba Exportar el archivo login de doctores (usuarios)
-		/*exportar_contrasenas(hospital.getDoctores());*/
-		
-		//Prueba de la busqueda filtrada
-		/*hospital.filtrar_doctores("area", Area.PEDIATRIA);
-		hospital.filtrar_pacientes("fecha de nacimiento", "07/02/97");*/
-		
-		//Prueba de enviar correo
-		//hospital.getDoctores().get(0).enviarMail(hospital.getPacientes().get(0));
-		
-		//Pruebas stats
-		//hospital.getPowerUser().get(0).add_pac(hospital.getPacientes().get(0), hospital.getDoctores().get(0));
-		//hospital.getPowerUser().get(0).stats_PacxArea();
-		//hospital.getPowerUser().get(0).stats_PacxDoc();;
 		
 		//Empezamos a desarrollar el menu
 		int decision=0;
@@ -626,7 +590,7 @@ public class Principal {
 					while(decision!=11 && user!=null) {
 						
 						System.out.println("\n�Que desea hacer?\n 1. Mostrar pacientes\n 2. Buscar pacientes\n 3. Mostrar citas\n"
-								+ " 4. Eliminar cita\n 5. Editar cita\n 6. Ultima modificacion del historial de citas\n 7. Enviar mail\n 8. "
+								+ " 4. Eliminar cita\n 5. Editar cita\n 6. Ultima modificacion del historial de citas\n 7. Enviar e-mail\n 8. "
 								+ "Pacientes totales\n 9. Pacientes por Hospital\n 10. Pacientes por area\n 11. Volver\n");
 						
 						while (!sc.hasNextInt()) {
@@ -666,7 +630,7 @@ public class Principal {
 							if (pc1!=null){
 								int posdc1 = posPacArr(hospital, dnic1);
 								
-								System.out.println("Introduzca la fecha de la cita");
+								System.out.println("Introduzca la fecha de la cita con el formato (dd/MM/yyyy)");
 								String dsce = sc.next();
 								Date dce = null;
 								try {
@@ -726,7 +690,7 @@ public class Principal {
 							Pacientes pd3 = findPacInArr(hospital, dnip3);
 							if (pd3!=null){
 								int posp3 = posPacArr(hospital, dnip3);
-								hospital.getDoctores().get(position).enviarMail(hospital.getPacientes().get(posp3));
+								user.enviarMail(hospital.getPacientes().get(posp3));
 							}
 							else
 								System.out.println("No existe ningun paciente con ese DNI");
