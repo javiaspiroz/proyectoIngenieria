@@ -134,12 +134,10 @@ public class Doctores {
 	//Metodos
 	public void mostrar_pac(){	
 		Iterator<Pacientes> itr = pacientes.iterator();
-		System.out.println(
-				"Apellido\t\t" + "Nombre\t\t" + "Fecha de nacimiento\t" + "DNI\t\t" + "telefono\t" + "email\t\t\t"
-						+ "direccion\t\t\t\t\t" + "Seguridad social\t" + "archivo de citas\t" + "Ultima modificacion");
 		while (itr.hasNext()) {
 			Pacientes actual = itr.next();
 			System.out.println(actual);
+			System.out.println("-------------------------------");
 		}
 
 		
@@ -149,11 +147,6 @@ public class Doctores {
 		Pacientes actual = null;
 		
 		Iterator<Pacientes> itr = pacientes.iterator();
-		System.out.println(
-				"Apellido\t\t" + "Nombre\t\t" + "Fecha de nacimiento\t" + "DNI\t\t" + "telefono\t" + "email\t\t\t"
-						+ "direccion\t\t\t\t\t" + "Seguridad social\t" + "archivo de citas\t" + "Ultima modificacion");
-		// if (!itr.hasNext()) throw new NoSuchElementException();
-
 		
 			if (busqueda instanceof String) {
 				String search = (String) busqueda;
@@ -416,11 +409,12 @@ public class Doctores {
 		});
 
 		Message mensaje = prepararMensaje(session, fromEmail, paciente);
-
 		try {
 			Transport.send(mensaje);
 			System.out.println("Email enviado");
 		} catch (MessagingException e) {
+			System.out.println("Ocurrió un error: No se pudo enviar el correo. ");
+		} catch( NullPointerException e) {
 			System.out.println("Ocurrió un error: No se pudo enviar el correo. ");
 		}
 		
@@ -507,8 +501,9 @@ public class Doctores {
 	@Override
 	public String toString() {
 
-		return apellido + "\t\t" + nombre + "\t\t" + getFecha_nacimiento_str() + "\t\t" + area + "\t" + dni + "\t"
-				+ telefono + "\t\t" + email + "\t" + direccion + "\t\t" + "pac_" + dni + ".csv" + "\t";
+		return "Apellido: " + apellido + "\nNombre: " + nombre + "\nFecha de nacimiento: " + getFecha_nacimiento_str()
+				+ "\nArea: " + area + "\nDNI:" + dni + "\nTelefono: " + telefono + "\nEmail: " + email + "\nDireccion: "
+				+ direccion + "\nArchivo de pacinetes: " + "pac_" + dni + ".csv" + "\n";
 
 	}
 

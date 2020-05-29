@@ -20,6 +20,7 @@ public class Hospital {
 	private ArrayList<Pacientes> pacientes;
 	private ArrayList<Doctores> doctores;
 	private ArrayList<PowerUser> powerUser;
+	String rutaraiz;
 
 	// Constructor
 	public Hospital(ArrayList<Pacientes> pacientes, ArrayList<Doctores> doctores, ArrayList<PowerUser> powerUser) {
@@ -29,8 +30,9 @@ public class Hospital {
 	}
 
 	//Constructir2
-	public Hospital(String ruta_pacientes) {
-		this.pacientes = importar_csv_pacientes(ruta_pacientes);
+	public Hospital(String rutaraiz, String ruta_pacientes) {
+		this.rutaraiz=rutaraiz;
+		this.pacientes = importar_csv_pacientes(rutaraiz+ruta_pacientes);
 		this.doctores = importar_csv_doctores();
 		this.powerUser = importar_csv_poweruser(); 
 		//cambiar por importar_csv_poweruser() cuando este el doc
@@ -103,7 +105,7 @@ public class Hospital {
 	}
 
 	public ArrayList<Doctores> importar_csv_doctores() {
-		String ruta="login_usuarios.csv";
+		String ruta=rutaraiz+"/login_usuarios.csv";
 		File fichero = new File(ruta);
 		String[][] datos = new String[contar_filas(ruta)][contar_columnas(ruta)];
 		String linea = "";
@@ -140,7 +142,7 @@ public class Hospital {
 	}
 
 	public ArrayList<PowerUser> importar_csv_poweruser() {
-		String ruta = "login_powerusers.csv";
+		String ruta = rutaraiz+"/login_powerusers.csv";
 		File fichero = new File(ruta);
 		String[][] datos = new String[contar_filas(ruta)][contar_columnas(ruta)];
 		String linea = "";
@@ -178,7 +180,7 @@ public class Hospital {
 		FileWriter fichero = null;
 
 		try {
-			fichero = new FileWriter(ruta);
+			fichero = new FileWriter(rutaraiz+"/"+ruta);
 			// Escribimos linea a linea en el fichero
 			
 			// Para exportar un archivo de pacientes
@@ -237,22 +239,20 @@ public class Hospital {
 
 	public void mostrar_doc() {
 		Iterator<Doctores> itr = doctores.iterator();
-		System.out.println("Apellido\t\t" + "Nombre\t\t" + "Fecha de nacimiento\t" + "Area\t\t" + "DNI\t\t"
-				+ "telefono\t" + "email\t\t\t" + "direccion\t\t\t\t\t" + "archivo de pacientes\t");
 		while (itr.hasNext()) {
 			Doctores actual = itr.next();
 			System.out.println(actual);
+			System.out.println("-------------------------------");
 		}
 	}
 
 	public void mostrar_pac() {
 		Iterator<Pacientes> itr = pacientes.iterator();
-		System.out.println(
-				"Apellido\t\t" + "Nombre\t\t" + "Fecha de nacimiento\t" + "DNI\t\t" + "telefono\t" + "email\t\t\t"
-						+ "direccion\t\t\t\t\t" + "Seguridad social\t" + "archivo de citas\t" + "Ultima modificacion");
+			
 		while (itr.hasNext()) {
 			Pacientes actual = itr.next();
 			System.out.println(actual);
+			System.out.println("-------------------------------");
 		}
 
 	}
@@ -295,15 +295,13 @@ public class Hospital {
 		Doctores actual;
 
 		Iterator<Doctores> itr = doctores.iterator();
-		System.out.println("Apellido\t\t" + "Nombre\t\t" + "Fecha de nacimiento\t" + "Area\t\t" + "DNI\t\t"
-				+ "telefono\t" + "email\t\t\t" + "direccion\t\t\t\t\t" + "archivo de pacientes\t");
 
 		if (busqueda instanceof String) {
 			String search = (String) busqueda;
 			if (filtro.equals("nombre")) {
 				while (itr.hasNext()) {
 					actual = itr.next();
-					if (actual.getNombre().equals(search)) {
+					if (actual.getNombre().contains(search)) {
 						System.out.println(actual);
 					}
 				}
@@ -380,17 +378,13 @@ public class Hospital {
 		Pacientes actual;
 		
 		Iterator<Pacientes> itr = pacientes.iterator();
-		System.out.println(
-				"Apellido\t\t" + "Nombre\t\t" + "Fecha de nacimiento\t" + "DNI\t\t" + "telefono\t" + "email\t\t\t"
-						+ "direccion\t\t\t\t\t" + "Seguridad social\t" + "archivo de citas\t" + "Ultima modificacion");
-		// if (!itr.hasNext()) throw new NoSuchElementException();
 
 			if (busqueda instanceof String) {
 				String search = (String) busqueda;
 				if (filtro.equals("nombre")) {
 					while (itr.hasNext()) {
 						actual = itr.next();
-						if (actual.getNombre().equals(search)) {
+						if (actual.getNombre().contains(search)) {
 							System.out.println(actual);
 						}
 					}

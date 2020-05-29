@@ -13,7 +13,7 @@ public class Pruebas {
 	
 	@Before
 	public void inicializar() {
-		hospital = new Hospital ("pacientes.csv");
+		hospital = new Hospital ("","pacientes.csv");
 	}
 	
 	@Test

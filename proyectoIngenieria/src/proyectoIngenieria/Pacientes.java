@@ -124,11 +124,13 @@ public class Pacientes {
 
 	//Metodos extras
 	@Override
-	public String toString () {
-		
-		return apellido + "\t\t" + nombre + "\t\t" + getFecha_nacimiento_str() + "\t\t"+ dni + "\t" + telefono + "\t\t" + email + 
-				"\t" + direccion + "\t\t" + seguridad_social + "\t\t" + "citas_"+dni+".csv" + "\t" + getModificacion_registro_str();
-				
+	public String toString() {
+
+		return "Apellido: " + apellido + "\nNombre" + nombre + "\nFecha de nacimiento: " + getFecha_nacimiento_str()
+				+ "\nDNI: " + dni + "\nTelefono: " + telefono + "\nEmail: " + email + "\nDireccion: " + direccion
+				+ "\nSeguridad Social: " + seguridad_social + "\nArchivo de citas: " + "citas_" + dni + ".csv"
+				+ "\nUltima modificacion del registro de citas: " + getModificacion_registro_str();
+
 	}
 
 	

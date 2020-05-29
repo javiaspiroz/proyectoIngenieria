@@ -9,9 +9,6 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.Scanner;
 
-import com.sun.org.apache.bcel.internal.generic.RETURN;
-import com.sun.org.apache.xerces.internal.impl.xpath.regex.ParseException;
-
 import proyectoIngenieria.Doctores.Area;
 
 public class Principal {
@@ -88,14 +85,14 @@ public class Principal {
 	 /*Para exportar un archivo de usuarios y contrasenas (tener uno para users y
 	 * otro para powerusers) al finalizar el programa (y solo por el, el poweruser no debe poder)*/
 	@SuppressWarnings("unchecked")
-	public static void exportar_contrasenas(@SuppressWarnings("rawtypes") ArrayList usuarios) {
+	public static void exportar_contrasenas(@SuppressWarnings("rawtypes") ArrayList usuarios, String rutaraiz) {
 		FileWriter fichero = null;
 
 		try {
 			// Escribimos linea a linea en el fichero
 			// Para exportar un archivo de doctores
 			if (usuarios.get(0) instanceof Doctores) {
-				fichero = new FileWriter("login_usuarios.csv");
+				fichero = new FileWriter(rutaraiz+"/login_usuarios.csv");
 				ArrayList<Doctores> exp_docs= (ArrayList<Doctores>) usuarios;
 				Iterator<Doctores> itr = exp_docs.iterator();
 				fichero.write("Apellido;Nombre;fecha de nacimientoÂ ;Area;DNI;telefono;email;direccion;archivo de pacientes;contraseÃ±as;\n");
@@ -109,7 +106,7 @@ public class Principal {
 			}
 			// Para exportar un archivo de powerusers
 			else if (usuarios.get(0) instanceof PowerUser) {
-				fichero = new FileWriter("login_powerusers.csv");
+				fichero = new FileWriter(rutaraiz+"/login_powerusers.csv");
 				ArrayList<PowerUser> exp_pu = (ArrayList<PowerUser>) usuarios;
 				Iterator<PowerUser> itr = exp_pu.iterator();
 				fichero.write("Apellido;Nombre;fecha de nacimiento;DNI;telefono;email;direccion;contraseÃ±as;\n");
@@ -190,7 +187,10 @@ public class Principal {
 		//declaramos la entrada de teclado
 		Scanner sc= new Scanner (System.in);
 		
-		Hospital hospital = new Hospital ("pacientes.csv");
+		System.out.println("Escriba la ruta de la caroeta donde estan los archivos: \nEJ:\nmacOS: /Users/sol/Downloads/ClinicAdmin/Files\nWindows: C:/Documents/ClinicAdmin/Files");
+		String ruta = sc.next();
+		
+		Hospital hospital = new Hospital (ruta, "/pacientes.csv");
 		
 		//Empezamos a desarrollar el menu
 		int decision=0;
@@ -219,7 +219,7 @@ public class Principal {
 								+ " 17. Pacientes por doctor\n 18. Anadir cita\n 19. Editar cita\n 20. Volver\n");
 						
 						while (!sc.hasNextInt()) {
-							System.out.print("ERROR. \nIntroduzca un numero (entero) por favor:");
+							System.out.print("ERROR!. \n-Introduzca un numero (entero) por favor:");
 							sc.next();	
 						}
 						decision=sc.nextInt();
@@ -345,13 +345,13 @@ public class Principal {
 						case 3://importar csv
 							hospital.importar_csv_doctores();
 							hospital.importar_csv_poweruser();
-							System.out.println("Indique la ruta del archivo CSV de pacientes");
+							System.out.println("Indique el nombre del archivo CSV de pacientes");
 							String rutaI = sc.next();
 							hospital.importar_csv_pacientes(rutaI);
 							System.out.println("El proceso de importacion ha finalizado");
 							break;
 						case 4://exportar csv
-							System.out.println("Indique la ruta donde quiere exportar");
+							System.out.println("Indique el nombre del archivo para guardar la exportarcion");
 							String rutaE = sc.next();
 							System.out.println("ï¿½Que tipo de contenido quiere exportar?\n Introduzca P (pacientes), "
 									+ "D (doctores) o W (administradores)");
@@ -381,11 +381,11 @@ public class Principal {
 							try {
 								DateFormat sourceFormat = new SimpleDateFormat("dd/MM/yyyy");
 								fecha = sourceFormat.parse(fechastr);
-							} catch (ParseException | java.text.ParseException e) {
+							} catch (java.text.ParseException e) {
 								System.out.print("Mal formato de fecha.");
 							}
 							System.out.println("Introduzca el area");							
-							String areastr = sc.next();
+							String areastr = sc.next().toUpperCase();
 							Area area=Enum.valueOf(Doctores.Area.class, areastr);
 							System.out.println("Introduzca el DNI");
 							String dni = sc.next();
@@ -398,9 +398,10 @@ public class Principal {
 							System.out.println("Introduzca el e-mail");
 							String mail = sc.next();
 							System.out.println("Introduzca la direccion");
-							String dir = sc.next();
+							sc.next();
+							String dir = sc.nextLine();
 							System.out.println("Introduzca el contasena");
-							String pass = sc.next();	
+							String pass = sc.next();
 							
 							Doctores auxD = new Doctores (nombre,apellido,fecha,area,dni,tel,mail,dir,pass);
 							poweruser.alta_doc(auxD);
@@ -417,7 +418,7 @@ public class Principal {
 							try {
 								DateFormat sourceFormat = new SimpleDateFormat("dd/MM/yyyy");
 								fecha2 = sourceFormat.parse(fechastr2);
-							} catch (ParseException | java.text.ParseException e) {
+							} catch (java.text.ParseException e) {
 								System.out.print("Mal formato de fecha.");
 							}
 							System.out.println("Introduzca el DNI");
@@ -431,10 +432,11 @@ public class Principal {
 							System.out.println("Introduzca el e-mail");
 							String mail2 = sc.next();
 							System.out.println("Introduzca la direccion");
-							String dir2 = sc.next();
+							sc.next();
+							String dir2 = sc.nextLine();
 							System.out.println("Introduzca el numero de seguridad social");
 							while (!sc.hasNextLong()) {
-								System.out.print("ERROR. \nIntroduzca un numero (entero) por favor:");
+								System.out.print("ERROR! \nIntroduzca un numero (entero) por favor:");
 								sc.next();	
 							}
 							long nss = sc.nextLong();	
@@ -469,7 +471,7 @@ public class Principal {
 							if (p1!=null && d1!=null)
 								poweruser.add_pac(p1, d1);
 							else
-								System.out.println("No se pudo completar la operación, revise los DNIs");
+								System.out.println("No se pudo completar la operaciï¿½n, revise los DNIs");
 							break;
 						case 12://quitar paciente de doctor
 							System.out.println("Introduzca el DNI del paciente");
@@ -481,7 +483,7 @@ public class Principal {
 							if (p2!=null && d2!=null)
 								poweruser.delete_pac(p2, d2);
 							else
-								System.out.println("No se pudo completar la operación, revise los DNIs");
+								System.out.println("No se pudo completar la operaciï¿½n, revise los DNIs");
 							break;
 						case 13://cambiar contrasena
 							System.out.println("Introduzca su nueva contrasena");
@@ -493,7 +495,7 @@ public class Principal {
 							String dni1 = sc.next();
 							Doctores d3 = findDocInArr(hospital, dni1);
 							if (d3!=null){
-								System.out.println("Introduzca la nueva contraseña del doctor");
+								System.out.println("Introduzca la nueva contraseï¿½a del doctor");
 								String newPassDoc = sc.next();
 								int posDoc = posDocArr(hospital, dni1);
 								hospital.getDoctores().get(posDoc).setContrasena(newPassDoc);		
@@ -527,7 +529,7 @@ public class Principal {
 								try {
 									DateFormat sourceFormat = new SimpleDateFormat("dd/MM/yyyy");
 									dc1 = sourceFormat.parse(dsc1);
-								} catch (ParseException | java.text.ParseException e) {
+								} catch (java.text.ParseException e) {
 									System.out.print("Mal formato de fecha.");
 								}
 								Citas c1 = new Citas (dc1, diagc1, medc1);
@@ -548,7 +550,7 @@ public class Principal {
 								try {
 									DateFormat sourceFormat = new SimpleDateFormat("dd/MM/yyyy");
 									dc2 = sourceFormat.parse(dsc2);
-								} catch (ParseException | java.text.ParseException e) {
+								} catch (java.text.ParseException e) {
 									System.out.print("Mal formato de fecha.");
 								}
 								System.out.println("introduzca el campo a editar medicamento o diagnostico");
@@ -594,7 +596,7 @@ public class Principal {
 								+ "Pacientes totales\n 9. Pacientes por Hospital\n 10. Pacientes por area\n 11. Volver\n");
 						
 						while (!sc.hasNextInt()) {
-							System.out.print("ERROR. \nIntroduzca un numero (entero) por favor:");
+							System.out.print("ERROR!. \nIntroduzca un numero (entero) por favor:");
 							sc.next();	
 						}
 						decision=sc.nextInt();
@@ -604,7 +606,7 @@ public class Principal {
 							user.mostrar_pac();
 							break;
 						case 2://buscar pacientes
-							System.out.println("¿Porque criterio desea buscar?");
+							System.out.println("ï¿½Porque criterio desea buscar?");
 							String filtroD = sc.next();
 							System.out.println("Introduzca el termino a buscar");
 							Object busquedaD = sc.next();
@@ -636,7 +638,7 @@ public class Principal {
 								try {
 									DateFormat sourceFormat = new SimpleDateFormat("dd/MM/yyyy");
 									dce = sourceFormat.parse(dsce);
-								} catch (ParseException | java.text.ParseException e) {
+								} catch (java.text.ParseException e) {
 									System.out.print("Mal formato de fecha.");
 								}
 								
@@ -658,7 +660,7 @@ public class Principal {
 								try {
 									DateFormat sourceFormat = new SimpleDateFormat("dd/MM/yyyy");
 									dcedit = sourceFormat.parse(dscedit);
-								} catch (ParseException | java.text.ParseException e) {
+								} catch (java.text.ParseException e) {
 									System.out.print("Mal formato de fecha.");
 								}
 								System.out.println("introduzca el campo a editar medicamento o diagnostico");
@@ -717,8 +719,8 @@ public class Principal {
 					
 					break;
 				case 3:
-					exportar_contrasenas(hospital.getDoctores());
-					exportar_contrasenas(hospital.getPowerUser());
+					exportar_contrasenas(hospital.getDoctores(), ruta);
+					exportar_contrasenas(hospital.getPowerUser(),ruta);
 					System.out.println("Fin del programa, gracias por confiar en Clinic Admin.");
 					break;
 				default:
